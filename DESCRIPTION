@@ -6,6 +6,6 @@ Author: Shipeng Guo
 Maintainer: Shipeng Guo <guoshipeng2008@126.com>
 Description: The package is a collection of multiple funtions to find simmilarities
     among RNA-seq data. 
-License: GPL---s
+License: GPL---sss
 Encoding: UTF-8
 LazyData: true
