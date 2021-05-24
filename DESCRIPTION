@@ -1,0 +1,11 @@
+Package: GPSA
+Type: Package
+Title: A R package to find simmilarity among RNA-seq data
+Version: 0.1.0
+Author: Shipeng Guo
+Maintainer: Shipeng Guo <guoshipeng2008@126.com>
+Description: The package is a collection of multiple funtions to find simmilarities
+    among RNA-seq data. 
+License: GPL
+Encoding: UTF-8
+LazyData: true
