@@ -18,14 +18,42 @@ navbar:
         - text: Get Started
           href: articles/GPSA.html
         - text: "---"
+        - text: "Query Types"
+        - text: Up/Down Bidirectional Query
+          href: articles/tutorial_updown.html
+        - text: Multi-channel Events
+          href: articles/tutorial_viral_mimicry.html
+        - text: "---"
+        - text: "Advanced Topics"
+        - text: Batch Queries & Meta-analysis
+          href: articles/tutorial_batch.html
+        - text: Full Vector Search
+          href: articles/tutorial_vector_search.html
+        - text: "---"
         - text: Complete Case Study
           href: articles/case_study.html
 
 articles:
-  - title: Tutorial
+  - title: Getting Started
     navbar: ~
     contents:
       - GPSA
+
+  - title: Query Types
+    desc: Different ways to query the perturbation database
+    contents:
+      - tutorial_updown
+      - tutorial_viral_mimicry
+
+  - title: Advanced Topics
+    desc: Batch processing and full vector search
+    contents:
+      - tutorial_batch
+      - tutorial_vector_search
+
+  - title: Case Studies
+    desc: Complete workflows and examples
+    contents:
       - case_study
 
 reference:
@@ -79,4 +107,3 @@ reference:
       - gpsa_get_h5path
       - gpsa_set_h5path
       - gpsa_install_deps
-

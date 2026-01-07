@@ -12,35 +12,42 @@ knitr::opts_chunk$set(eval = FALSE)
 ```
 
 ## What is GPSA?
+
 GPSA (Gene-set Perturbation Signature Analysis) provides **fast similarity search** over large-scale perturbation signature databases using cMAP/GSEA-style rankZ semantics.
 
-**Key Features:**
+Given a query gene set, GPSA finds perturbations (e.g., gene knockouts, drug treatments) that produce **similar** or **opposite** transcriptomic effects. This enables:
 
-- Single gene-set queries
-- Up/Down bidirectional queries (traditional cMAP-style)
-- Multi-channel event definitions (e.g., viral mimicry)
-- Dual-mode scoring: Phenocopy (strict) vs Discovery (one-sided)
-- Batch queries with meta-analysis
-- Full geneList vector search with adaptive sparsification
-- HDF5-based storage for memory efficiency
+- Drug repurposing (find compounds that reverse a disease signature)
+- Mechanism discovery (identify genes whose perturbation mimics your phenotype)
+- Cross-study comparison (compare your results against public databases)
 
 ## Installation
 
+Install GPSA from GitHub:
 ```{r install}
-# Set mirrors (China users)
-options("repos" = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
-options(BioC_mirror = "https://mirrors.westlake.edu.cn/bioconductor")
+# Install remotes if needed
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
 
-# Install dependencies
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install("rhdf5")
-install.packages("Matrix")
+# Install GPSA from GitHub
+remotes::install_github("Shipeng-Guo/GPSA")
+```
 
-# Install GPSA from local source
-install.packages("/path/to/GPSA", repos = NULL, type = "source")
+### Optional Dependencies
 
-# Or use devtools
-# devtools::install_local("/path/to/GPSA")
+```{r optional-deps}
+# For GSEA visualization (recommended)
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install("fgsea")
+
+# For MSigDB gene sets (used in examples)
+install.packages("msigdbr")
+
+# For advanced plotting
+install.packages("ggplot2")
 ```
 
 ## First-time Setup: HDF5 Database
@@ -50,138 +57,159 @@ GPSA requires a pre-built HDF5 database containing perturbation signatures. Down
 ```{r setup-h5}
 library(GPSA)
 
-# Method 1: R option (recommended, persists for session)
+# Set path once (persists for session)
 options(GPSA.h5 = "/path/to/gpsa_db.h5")
 
-# Method 2: Environment variable
+# Alternative: environment variable
 # Sys.setenv(GPSA_H5 = "/path/to/gpsa_db.h5")
-
-# Method 3: Specify h5file parameter in each call
-# db <- gpsa_load_db(h5file = "/path/to/gpsa_db.h5")
 ```
 
 ## Loading the Database
 
 GPSA offers two loading modes:
 
-### Memory Mode (Recommended for interactive analysis)
-
-```{r memory-mode}
-# Preload Z matrix into RAM (~1GB, ~9s load time)
-# Subsequent queries: ~0.15s each
+```{r load-db}
+# Memory mode (recommended): ~0.15s per query, ~1GB RAM
 db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
+
+# Disk mode: ~7s per query, minimal RAM
+# db <- gpsa_load_db(preload_Z = FALSE)
 ```
 
-### Disk Mode (For limited memory)
+## Example 1: Estrogen Response (Suppressed)
 
-```{r disk-mode}
-# No preload, read from disk on each query
-# Load time: ~0.04s, Query time: ~7s each
-db <- gpsa_load_db(preload_Z = FALSE, verbose = TRUE)
+Let's find perturbations that **suppress** estrogen signaling. We'll use the Hallmark Estrogen Response Early gene set from MSigDB.
+
+```{r estrogen-setup}
+library(msigdbr)
+
+# Get Hallmark gene sets for human
+hallmark <- msigdbr(species = "Homo sapiens", category = "H")
+
+# Helper function to extract genes
+get_hallmark_genes <- function(gs_name) {
+  unique(hallmark$gene_symbol[hallmark$gs_name == gs_name])
+}
+
+# Get estrogen response genes
+er_genes <- get_hallmark_genes("HALLMARK_ESTROGEN_RESPONSE_EARLY")
+message(sprintf("Estrogen Response Early: %d genes", length(er_genes)))
 ```
 
-## Quick Example: Single Gene Set Query
+### Query for Estrogen Suppression
 
-```{r single-query}
-# Define a query gene set
-query <- list(
-  MyGenes = list(
-    genes = c("TP53", "BRCA1", "EGFR", "MYC", "KRAS"),  # Your genes
-    sign = +1,    # +1 for up-regulation, -1 for down-regulation
-    weight = 1    # Optional weight
+To find perturbations that **suppress** estrogen signaling, we use `sign = -1`:
+
+```{r estrogen-query}
+# Define query: negative sign means we want perturbations where these genes go DOWN
+query_er_down <- list(
+  ER_SUPPRESSED = list(
+    genes = er_genes,
+    sign = -1,      # Looking for suppression
+    weight = 1
   )
 )
 
-# Search
-out <- gpsa_search(db, query, return_components = FALSE)
+# Run search
+out_er <- gpsa_search(db, query_er_down, return_components = TRUE)
 
-# View results
-head(out$res[, c("signature_id", "pbgene", "CellLineName", "Score", "tau", "FDR_rank")])
+# View top hits (perturbations that suppress estrogen response)
+message("=== Top 10 Estrogen Suppressors ===")
+print(head(out_er$res[, c("signature_id", "pbgene", "CellLineName", 
+                          "Score", "tau", "FDR_rank")], 10))
 ```
 
-## Quick Example: Up/Down Query
+### Validate with GSEA Plot
 
-Find perturbations similar to a reference signature:
+```{r estrogen-gsea}
+# Get the logFC profile of the top hit
+top_hit <- out_er$res$signature_id[1]
+gl_top <- gpsa_get_signature(db, top_hit, dataset = "logFC")
 
-```{r updown-query}
-# Get a reference signature's logFC
-gl <- gpsa_get_signature(db, "D21455", dataset = "logFC")
-
-# Create Up/Down query (top 300 + bottom 300 genes)
-query_ud <- gpsa_make_updown_query(gl, n_each = 300)
-
-# Search
-out <- gpsa_search(db, query_ud, return_components = TRUE)
-
-# Most similar perturbations
-head(out$res)
-
-# Most opposite perturbations
-tail(out$res)
+# Plot GSEA running enrichment
+gpsa_plot_gsea(gl_top, er_genes, 
+               main = paste0(top_hit, " vs Estrogen Response Early"))
 ```
 
-## Performance Summary
+A negative enrichment score confirms that estrogen response genes are indeed down-regulated in this perturbation.
 
-| Mode | Query Type | Time (avg) |
-|------|------------|------------|
-| Memory | Single gene set | 0.14s |
-| Memory | Up/Down 2-channel | 0.20s |
-| Memory | Multi 4-channel | 0.25s |
-| Memory | Batch 5 queries | 0.47s |
-| Disk | Single gene set | 7.2s |
+## Example 2: Interferon Response (Activated)
 
-**Recommendation**: Use `preload_Z = TRUE` for interactive analysis.
+Now let's find perturbations that **activate** interferon signaling.
+
+```{r ifn-setup}
+# Get interferon alpha response genes
+ifn_genes <- get_hallmark_genes("HALLMARK_INTERFERON_ALPHA_RESPONSE")
+message(sprintf("Interferon Alpha Response: %d genes", length(ifn_genes)))
+```
+
+### Query for Interferon Activation
+
+To find perturbations that **activate** interferon signaling, we use `sign = +1`:
+
+```{r ifn-query}
+# Define query: positive sign means we want perturbations where these genes go UP
+query_ifn_up <- list(
+  IFN_ACTIVATED = list(
+    genes = ifn_genes,
+    sign = +1,      # Looking for activation
+    weight = 1
+  )
+)
+
+# Run search
+out_ifn <- gpsa_search(db, query_ifn_up, return_components = TRUE)
+
+# View top hits (perturbations that activate interferon response)
+message("=== Top 10 Interferon Activators ===")
+print(head(out_ifn$res[, c("signature_id", "pbgene", "CellLineName",
+                           "Score", "tau", "FDR_rank")], 10))
+```
+
+### Validate with GSEA Plot
+
+```{r ifn-gsea}
+# Get the logFC profile of the top hit
+top_ifn <- out_ifn$res$signature_id[1]
+gl_ifn <- gpsa_get_signature(db, top_ifn, dataset = "logFC")
+
+# Plot GSEA running enrichment
+gpsa_plot_gsea(gl_ifn, ifn_genes,
+               main = paste0(top_ifn, " vs Interferon Alpha Response"))
+```
+
+A positive enrichment score confirms that interferon response genes are up-regulated.
+
+## Understanding the Results
+
+The result table contains:
+
+| Column | Description |
+|--------|-------------|
+| `signature_id` | Unique identifier for the perturbation |
+| `pbgene` | Perturbed gene name |
+| `CellLineName` | Cell line where perturbation was performed |
+| `Score` | Raw similarity score (higher = more similar to query) |
+| `tau` | Normalized score (percentile rank, -100 to +100) |
+| `p_rank` | Rank-based p-value |
+| `FDR_rank` | False discovery rate |
+
+**Interpreting tau scores:**
+- `tau > 90`: Strong positive connection (similar to query)
+- `tau < -90`: Strong negative connection (opposite of query)
+- `tau ~ 0`: No significant connection
 
 ## Next Steps
 
-For complete examples including:
+This tutorial covered single gene set queries. GPSA supports many more advanced features:
 
-- **Estrogen pathway query** - Single gene set with GSEA validation
-- **Viral mimicry event definition** - Multi-channel gated search
-- **Dual-mode scoring** - Phenocopy vs Discovery
-- **Batch queries and meta-analysis**
-- **Full vector search with adaptive sparsification**
-
-See the **[Complete Case Study](case_study.html)** vignette.
-
-## API Reference
-
-### Core Functions
-
-| Function | Description |
-|----------|-------------|
-| `gpsa_load_db()` | Load HDF5 database |
-| `gpsa_search()` | Gene-set query |
-| `gpsa_search_vector()` | Full geneList query |
-| `gpsa_batch_search()` | Multiple queries at once |
-| `gpsa_build_db()` | Build new database |
-
-### Query Helpers
-
-| Function | Description |
-|----------|-------------|
-| `gpsa_make_updown_query()` | Create Up/Down query |
-| `gpsa_make_updown_query_adaptive()` | Adaptive gene selection (energy-based) |
-| `gpsa_get_signature()` | Extract signature vector |
-
-### Post-processing
-
-| Function | Description |
-|----------|-------------|
-| `gpsa_postprocess_modes()` | Dual-mode scoring (Phenocopy/Discovery) |
-| `gpsa_attach_channel_scores()` | Add per-channel columns |
-| `gpsa_meta_stouffer()` | Meta-analysis across queries |
-
-### Visualization
-
-| Function | Description |
-|----------|-------------|
-| `gpsa_plot_gsea()` | GSEA running enrichment plot |
-| `gpsa_gsea_running()` | Compute running scores |
+- **[Up/Down Bidirectional Query](tutorial_updown.html)** - Find perturbations similar to a reference signature using both up- and down-regulated genes
+- **[Multi-channel Events](tutorial_viral_mimicry.html)** - Define complex biological events (e.g., IFN up AND cell cycle down)
+- **[Batch Queries](tutorial_batch.html)** - Run multiple queries at once with meta-analysis
+- **[Full Vector Search](tutorial_vector_search.html)** - Query with complete expression profiles
 
 ## Session Info
 
 ```{r session}
 sessionInfo()
 ```
-

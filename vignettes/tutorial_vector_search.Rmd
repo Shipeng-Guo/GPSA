@@ -1,0 +1,284 @@
+---
+title: "Tutorial: Full Vector Search"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial: Vector Search}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Overview
+
+While Up/Down queries use only the most extreme genes, **vector search** uses the entire gene expression profile as a query. This approach:
+
+- Leverages information from all genes (not just top/bottom)
+- Uses rankZ transformation for robust similarity
+- Supports adaptive sparsification to balance signal and noise
+
+## Setup
+
+```{r load}
+library(GPSA)
+
+# Set database path
+options(GPSA.h5 = "/path/to/gpsa_db.h5")
+
+# Load database
+db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
+```
+
+## Preparing a Full Vector Query
+
+### Extract Complete Expression Profile
+
+```{r get-vector}
+# Get a reference signature's full logFC vector
+sig_ref <- "D21455"  # Replace with actual signature ID
+gl_full <- gpsa_get_signature(db, sig_ref, dataset = "logFC")
+
+# This contains logFC values for all genes
+length(gl_full)
+summary(gl_full)
+```
+
+### Understanding the Query Vector
+
+```{r examine-vector}
+# The vector is named by gene symbol
+head(gl_full)
+
+# Distribution of logFC values
+hist(gl_full, breaks = 50, main = "logFC Distribution",
+     xlab = "log2 Fold Change")
+
+# How many genes have substantial changes?
+sum(abs(gl_full) > 1)  # |logFC| > 1
+sum(abs(gl_full) > 0.5)  # |logFC| > 0.5
+```
+
+## Running Vector Search
+
+### Basic Vector Search
+
+```{r vector-search}
+out_vec <- gpsa_search_vector(
+  db, 
+  gl_full,
+  eta = 0.90,           # Capture 90% of signal energy
+  min_k = 300,          # Minimum 300 genes
+  max_k = 5000,         # Maximum 5000 genes
+  transform = "rankZ",  # Apply rankZ transformation
+  normalize = TRUE      # Normalize to unit length
+)
+
+# Check self-rank (should be very high)
+self_rank <- gpsa_rank_in(out_vec$res, sig_ref)
+message(sprintf("Self-rank in vector search: %d", self_rank))
+```
+
+### Examining Compile Information
+
+```{r compile-info}
+# The compile info shows how the vector was processed
+message("=== Vector Search Compile Info ===")
+print(out_vec$compile)
+
+# Key fields:
+# - k_used: number of genes retained after sparsification
+# - energy_captured: fraction of signal energy retained
+# - threshold: logFC threshold for sparsification
+```
+
+### View Results
+
+```{r view-results}
+message("=== Vector Search Top 10 ===")
+print(head(out_vec$res[, c("signature_id", "pbgene", "CellLineName",
+                           "Score", "tau", "FDR_rank")], 10))
+```
+
+## Understanding the Parameters
+
+### Energy Threshold (eta)
+
+The `eta` parameter controls how much of the signal to retain:
+
+```{r eta-examples}
+# High eta (0.95): Keep more genes, capture more signal
+out_95 <- gpsa_search_vector(db, gl_full, eta = 0.95, min_k = 300)
+message(sprintf("eta=0.95: %d genes used", out_95$compile$k_used))
+
+# Lower eta (0.80): Keep fewer genes, focus on strongest signals
+out_80 <- gpsa_search_vector(db, gl_full, eta = 0.80, min_k = 300)
+message(sprintf("eta=0.80: %d genes used", out_80$compile$k_used))
+```
+
+### Min/Max Gene Constraints
+
+```{r min-max}
+# Force at least 500 genes
+out_min500 <- gpsa_search_vector(db, gl_full, eta = 0.90, min_k = 500)
+
+# Limit to at most 1000 genes
+out_max1000 <- gpsa_search_vector(db, gl_full, eta = 0.90, max_k = 1000)
+```
+
+### Transform Options
+
+```{r transform}
+# rankZ (default): Robust to outliers, cMAP-style semantics
+out_rankz <- gpsa_search_vector(db, gl_full, transform = "rankZ")
+
+# none: Use raw values (if already transformed)
+# out_raw <- gpsa_search_vector(db, gl_full, transform = "none")
+```
+
+## Comparing Vector Search vs Up/Down Query
+
+```{r compare-methods}
+# Up/Down query with same reference
+query_ud <- gpsa_make_updown_query(gl_full, n_each = 500)
+out_ud <- gpsa_search(db, query_ud, return_components = FALSE)
+
+# Compare self-ranks
+self_vec <- gpsa_rank_in(out_vec$res, sig_ref)
+self_ud <- gpsa_rank_in(out_ud$res, sig_ref)
+
+message(sprintf("Self-rank comparison:"))
+message(sprintf("  Vector search: %d", self_vec))
+message(sprintf("  Up/Down query: %d", self_ud))
+
+# Compare top hits overlap
+top_vec <- head(out_vec$res$signature_id, 100)
+top_ud <- head(out_ud$res$signature_id, 100)
+overlap <- length(intersect(top_vec, top_ud))
+
+message(sprintf("Top 100 overlap: %d signatures", overlap))
+```
+
+### When to Use Each Approach
+
+| Approach | Best For |
+|----------|----------|
+| Up/Down Query | Classic cMAP analysis, interpretable results |
+| Vector Search | Maximum information usage, subtle signatures |
+| Adaptive Up/Down | Balance between both approaches |
+
+## Adaptive Sparsification Deep Dive
+
+### How It Works
+
+1. Compute squared values (energy) for each gene
+2. Sort genes by energy (descending)
+3. Cumulative sum until reaching eta fraction of total energy
+4. Retain those genes, zero out the rest
+
+```{r sparsification-viz}
+# Visualize which genes are retained
+compile_info <- gpsa_compile_signature_vector(
+  gl_full, 
+  genes = db$genes,
+  eta = 0.90,
+  min_k = 300,
+  max_k = 5000
+)
+
+# The compile info shows threshold and genes used
+print(compile_info[c("k_used", "energy_captured", "threshold")])
+```
+
+### Examining Retained Genes
+
+```{r retained-genes}
+# Which genes were kept?
+# Genes with |logFC| above threshold are retained
+threshold <- compile_info$threshold
+retained <- names(gl_full)[abs(gl_full) >= threshold]
+
+message(sprintf("Retained %d genes with |logFC| >= %.3f", 
+                length(retained), threshold))
+
+# Top retained genes by absolute logFC
+top_retained <- sort(abs(gl_full[retained]), decreasing = TRUE)[1:20]
+print(top_retained)
+```
+
+## Using Custom Gene Lists
+
+You can also use your own gene list (not from database):
+
+```{r custom-genelist}
+# Create a custom geneList from your experiment
+# Named vector: names = gene symbols, values = logFC
+my_genelist <- c(
+  "TP53" = 2.5,
+  "BRCA1" = 1.8,
+  "EGFR" = -1.2,
+  "MYC" = -2.0
+  # ... more genes
+)
+
+# Search with custom list
+# Note: genes not in database will be ignored
+out_custom <- gpsa_search_vector(
+  db, 
+  my_genelist,
+  eta = 0.90,
+  min_k = 10,  # Lower min for small gene lists
+  transform = "rankZ"
+)
+```
+
+## Handling Large Gene Lists
+
+For very large input vectors:
+
+```{r large-vectors}
+# If you have expression for all genes
+# The function automatically:
+# 1. Filters to genes present in database
+# 2. Applies sparsification
+# 3. Normalizes the query vector
+
+# Check overlap with database genes
+overlap_genes <- intersect(names(gl_full), db$genes)
+message(sprintf("Genes in common with database: %d", length(overlap_genes)))
+```
+
+## Best Practices
+
+1. **Start with default parameters**: `eta = 0.90`, `min_k = 300`, `max_k = 5000`
+2. **Compare with Up/Down**: Vector search should give similar but potentially better results
+3. **Check compile info**: Understand how many genes are actually used
+4. **Use higher eta for subtle signatures**: If changes are small, retain more genes
+5. **Validate top hits**: Always examine GSEA plots for biological relevance
+
+## Performance Notes
+
+```{r performance}
+# Vector search is slightly slower than Up/Down due to:
+# 1. Energy computation for all genes
+# 2. Larger query vectors (more genes)
+# But still very fast in memory mode (~0.2s)
+```
+
+## Summary
+
+| Parameter | Default | Purpose |
+|-----------|---------|---------|
+| `eta` | 0.90 | Fraction of signal energy to capture |
+| `min_k` | 300 | Minimum genes to retain |
+| `max_k` | 5000 | Maximum genes to retain |
+| `transform` | "rankZ" | How to transform query values |
+| `normalize` | TRUE | Normalize to unit length |
+
+## Session Info
+
+```{r session}
+sessionInfo()
+```
+
