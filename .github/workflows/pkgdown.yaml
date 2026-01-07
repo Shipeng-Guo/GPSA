@@ -32,10 +32,23 @@ jobs:
         with:
           use-public-rspm: true
 
+      # Install system dependencies for rhdf5
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libhdf5-dev
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
+
+      # Install Bioconductor packages separately (rhdf5)
+      - name: Install Bioconductor dependencies
+        run: |
+          if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+          BiocManager::install("rhdf5", ask = FALSE, update = FALSE)
+        shell: Rscript {0}
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
@@ -48,4 +61,3 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
-
