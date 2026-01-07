@@ -1,13 +1,24 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+#
+# NOTE: This workflow is configured for MANUAL triggering only.
+# The pkgdown site should be built locally (where the HDF5 database exists)
+# and then deployed using: pkgdown::deploy_to_branch()
+#
+# This prevents CI from overwriting the site with non-executable vignettes.
+
 on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
-  release:
-    types: [published]
+  # Manual trigger only - prevents auto-overwrite of gh-pages
   workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Deploy to gh-pages (requires HDF5 database in CI, typically false)'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 name: pkgdown
 
@@ -16,7 +27,6 @@ permissions: read-all
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
-    # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
@@ -54,8 +64,9 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Deploy to GitHub pages 🚀
-        if: github.event_name != 'pull_request'
+      # Only deploy if explicitly requested AND workflow was manually triggered
+      - name: Deploy to GitHub pages
+        if: github.event.inputs.deploy == 'true'
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           clean: false

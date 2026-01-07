@@ -2,13 +2,45 @@
 title: "Tutorial: Up/Down Bidirectional Query"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial: Up/Down Query}
+  %\VignetteIndexEntry{Tutorial: Up/Down Bidirectional Query}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# Resolve HDF5 database path (for vignette rendering)
+resolve_h5_path <- function() {
+  h5 <- Sys.getenv("GPSA_H5", unset = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  h5 <- getOption("GPSA.h5", default = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  candidates <- c(
+    "../output/gpsa_rankZ_logFC_optimized.h5",
+    "output/gpsa_rankZ_logFC_optimized.h5",
+    "~/gpsa_db.h5"
+  )
+  for (h5 in candidates) {
+    if (file.exists(h5)) return(normalizePath(h5))
+  }
+  return("")
+}
+
+h5_path <- resolve_h5_path()
+has_db <- (h5_path != "")
+
+knitr::opts_chunk$set(
+  eval = has_db,
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+if (has_db) {
+  options(GPSA.h5 = h5_path)
+}
 ```
 
 ## Overview
@@ -24,9 +56,6 @@ GPSA supports two methods for selecting query genes:
 ```{r load}
 library(GPSA)
 
-# Set database path
-options(GPSA.h5 = "/path/to/gpsa_db.h5")
-
 # Load database in memory mode
 db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
 ```
@@ -39,7 +68,14 @@ The classic approach uses a fixed number of genes from each tail of the expressi
 
 ```{r ref-signature}
 # Choose a reference signature (e.g., an ESR1 perturbation)
-sig_ref <- "D21455"  # Replace with actual signature ID
+# First, let's find an ESR1-related signature
+esr1_sigs <- db$meta[grep("ESR1", db$meta$pbgene, ignore.case = TRUE), ]
+if (nrow(esr1_sigs) > 0) {
+  sig_ref <- esr1_sigs$signature_id[1]
+} else {
+  sig_ref <- db$sigs[1]  # Fallback to first signature
+}
+message(sprintf("Using reference signature: %s", sig_ref))
 
 # Get the logFC vector
 gl_ref <- gpsa_get_signature(db, sig_ref, dataset = "logFC")
@@ -202,7 +238,7 @@ print(head(out_modes$res_discovery[, c("signature_id", "pbgene",
 
 Validate hits by examining the running enrichment:
 
-```{r gsea-validate}
+```{r gsea-validate, fig.cap="GSEA validation plots for a top hit showing Up and Down gene enrichment."}
 # Get logFC for a top hit
 candidate <- out_ud$res$signature_id[2]  # Second-ranked hit
 gl_cand <- gpsa_get_signature(db, candidate, dataset = "logFC")
@@ -237,4 +273,3 @@ gpsa_plot_gsea(gl_cand, query_ud$Down$genes,
 ```{r session}
 sessionInfo()
 ```
-

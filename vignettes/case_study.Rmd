@@ -2,13 +2,17 @@
 title: "Complete Case Study: From Gene Sets to Discovery"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Complete Case Study}
+  %\VignetteIndexEntry{Complete Case Study: From Gene Sets to Discovery}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(
+  eval = TRUE,
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
 ## Overview

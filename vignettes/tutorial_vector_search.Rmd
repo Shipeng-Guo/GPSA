@@ -2,13 +2,45 @@
 title: "Tutorial: Full Vector Search"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial: Vector Search}
+  %\VignetteIndexEntry{Tutorial: Full Vector Search}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# Resolve HDF5 database path (for vignette rendering)
+resolve_h5_path <- function() {
+  h5 <- Sys.getenv("GPSA_H5", unset = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  h5 <- getOption("GPSA.h5", default = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  candidates <- c(
+    "../output/gpsa_rankZ_logFC_optimized.h5",
+    "output/gpsa_rankZ_logFC_optimized.h5",
+    "~/gpsa_db.h5"
+  )
+  for (h5 in candidates) {
+    if (file.exists(h5)) return(normalizePath(h5))
+  }
+  return("")
+}
+
+h5_path <- resolve_h5_path()
+has_db <- (h5_path != "")
+
+knitr::opts_chunk$set(
+  eval = has_db,
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+if (has_db) {
+  options(GPSA.h5 = h5_path)
+}
 ```
 
 ## Overview
@@ -24,9 +56,6 @@ While Up/Down queries use only the most extreme genes, **vector search** uses th
 ```{r load}
 library(GPSA)
 
-# Set database path
-options(GPSA.h5 = "/path/to/gpsa_db.h5")
-
 # Load database
 db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
 ```
@@ -37,27 +66,28 @@ db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
 
 ```{r get-vector}
 # Get a reference signature's full logFC vector
-sig_ref <- "D21455"  # Replace with actual signature ID
+sig_ref <- db$sigs[1]  # Use first signature as example
 gl_full <- gpsa_get_signature(db, sig_ref, dataset = "logFC")
 
 # This contains logFC values for all genes
-length(gl_full)
-summary(gl_full)
+message(sprintf("Vector length: %d genes", length(gl_full)))
+print(summary(gl_full))
 ```
 
 ### Understanding the Query Vector
 
-```{r examine-vector}
+```{r examine-vector, fig.cap="Distribution of logFC values in the reference signature."}
 # The vector is named by gene symbol
-head(gl_full)
+message("First 6 genes:")
+print(head(gl_full))
 
 # Distribution of logFC values
 hist(gl_full, breaks = 50, main = "logFC Distribution",
-     xlab = "log2 Fold Change")
+     xlab = "log2 Fold Change", col = "steelblue")
 
 # How many genes have substantial changes?
-sum(abs(gl_full) > 1)  # |logFC| > 1
-sum(abs(gl_full) > 0.5)  # |logFC| > 0.5
+message(sprintf("Genes with |logFC| > 1: %d", sum(abs(gl_full) > 1)))
+message(sprintf("Genes with |logFC| > 0.5: %d", sum(abs(gl_full) > 0.5)))
 ```
 
 ## Running Vector Search
@@ -122,14 +152,16 @@ message(sprintf("eta=0.80: %d genes used", out_80$compile$k_used))
 ```{r min-max}
 # Force at least 500 genes
 out_min500 <- gpsa_search_vector(db, gl_full, eta = 0.90, min_k = 500)
+message(sprintf("min_k=500: %d genes used", out_min500$compile$k_used))
 
 # Limit to at most 1000 genes
 out_max1000 <- gpsa_search_vector(db, gl_full, eta = 0.90, max_k = 1000)
+message(sprintf("max_k=1000: %d genes used", out_max1000$compile$k_used))
 ```
 
 ### Transform Options
 
-```{r transform}
+```{r transform, eval=FALSE}
 # rankZ (default): Robust to outliers, cMAP-style semantics
 out_rankz <- gpsa_search_vector(db, gl_full, transform = "rankZ")
 
@@ -148,7 +180,7 @@ out_ud <- gpsa_search(db, query_ud, return_components = FALSE)
 self_vec <- gpsa_rank_in(out_vec$res, sig_ref)
 self_ud <- gpsa_rank_in(out_ud$res, sig_ref)
 
-message(sprintf("Self-rank comparison:"))
+message("Self-rank comparison:")
 message(sprintf("  Vector search: %d", self_vec))
 message(sprintf("  Up/Down query: %d", self_ud))
 
@@ -178,40 +210,26 @@ message(sprintf("Top 100 overlap: %d signatures", overlap))
 4. Retain those genes, zero out the rest
 
 ```{r sparsification-viz}
-# Visualize which genes are retained
-compile_info <- gpsa_compile_signature_vector(
-  gl_full, 
-  genes = db$genes,
-  eta = 0.90,
-  min_k = 300,
-  max_k = 5000
-)
-
-# The compile info shows threshold and genes used
-print(compile_info[c("k_used", "energy_captured", "threshold")])
+# The compile info from gpsa_search_vector shows sparsification details
+message("=== Sparsification Summary ===")
+message(sprintf("Genes used: %d", out_vec$compile$k))
+message(sprintf("Energy captured: %.1f%%", out_vec$compile$capture * 100))
 ```
 
 ### Examining Retained Genes
 
 ```{r retained-genes}
-# Which genes were kept?
-# Genes with |logFC| above threshold are retained
-threshold <- compile_info$threshold
-retained <- names(gl_full)[abs(gl_full) >= threshold]
-
-message(sprintf("Retained %d genes with |logFC| >= %.3f", 
-                length(retained), threshold))
-
-# Top retained genes by absolute logFC
-top_retained <- sort(abs(gl_full[retained]), decreasing = TRUE)[1:20]
-print(top_retained)
+# Top genes by absolute logFC (these are most likely retained)
+top_genes <- sort(abs(gl_full), decreasing = TRUE)[1:20]
+message("=== Top 20 Genes by |logFC| ===")
+print(top_genes)
 ```
 
 ## Using Custom Gene Lists
 
 You can also use your own gene list (not from database):
 
-```{r custom-genelist}
+```{r custom-genelist, eval=FALSE}
 # Create a custom geneList from your experiment
 # Named vector: names = gene symbols, values = logFC
 my_genelist <- c(
@@ -259,7 +277,7 @@ message(sprintf("Genes in common with database: %d", length(overlap_genes)))
 
 ## Performance Notes
 
-```{r performance}
+```{r performance, eval=FALSE}
 # Vector search is slightly slower than Up/Down due to:
 # 1. Energy computation for all genes
 # 2. Larger query vectors (more genes)
@@ -281,4 +299,3 @@ message(sprintf("Genes in common with database: %d", length(overlap_genes)))
 ```{r session}
 sessionInfo()
 ```
-

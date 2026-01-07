@@ -8,7 +8,44 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# Resolve HDF5 database path (for vignette rendering)
+resolve_h5_path <- function() {
+  # Priority: GPSA_H5 env var > options(GPSA.h5) > default locations
+  h5 <- Sys.getenv("GPSA_H5", unset = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  h5 <- getOption("GPSA.h5", default = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  # Try common relative paths (from vignettes/ directory)
+  candidates <- c(
+    "../output/gpsa_rankZ_logFC_optimized.h5",
+    "output/gpsa_rankZ_logFC_optimized.h5",
+    "~/gpsa_db.h5"
+  )
+  for (h5 in candidates) {
+    if (file.exists(h5)) return(normalizePath(h5))
+  }
+  return("")
+}
+
+h5_path <- resolve_h5_path()
+has_db <- (h5_path != "")
+
+# Set global chunk options: execute only if database available
+knitr::opts_chunk$set(
+  eval = has_db,
+  collapse = TRUE,
+
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+# If database found, set the option for GPSA
+if (has_db) {
+  options(GPSA.h5 = h5_path)
+}
 ```
 
 ## What is GPSA?
@@ -24,7 +61,8 @@ Given a query gene set, GPSA finds perturbations (e.g., gene knockouts, drug tre
 ## Installation
 
 Install GPSA from GitHub:
-```{r install}
+
+```{r install, eval=FALSE}
 # Install remotes if needed
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
@@ -36,7 +74,7 @@ remotes::install_github("Shipeng-Guo/GPSA")
 
 ### Optional Dependencies
 
-```{r optional-deps}
+```{r optional-deps, eval=FALSE}
 # For GSEA visualization (recommended)
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
@@ -54,7 +92,7 @@ install.packages("ggplot2")
 
 GPSA requires a pre-built HDF5 database containing perturbation signatures. Download the database file and set its path:
 
-```{r setup-h5}
+```{r setup-h5-show, eval=FALSE}
 library(GPSA)
 
 # Set path once (persists for session)
@@ -69,15 +107,18 @@ options(GPSA.h5 = "/path/to/gpsa_db.h5")
 GPSA offers two loading modes:
 
 ```{r load-db}
+library(GPSA)
+
 # Memory mode (recommended): ~0.15s per query, ~1GB RAM
 db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
 
 # Disk mode: ~7s per query, minimal RAM
 # db <- gpsa_load_db(preload_Z = FALSE)
+
+print(db)
 ```
 
 ## Example 1: Estrogen Response (Suppressed)
-
 Let's find perturbations that **suppress** estrogen signaling. We'll use the Hallmark Estrogen Response Early gene set from MSigDB.
 
 ```{r estrogen-setup}
@@ -121,7 +162,7 @@ print(head(out_er$res[, c("signature_id", "pbgene", "CellLineName",
 
 ### Validate with GSEA Plot
 
-```{r estrogen-gsea}
+```{r estrogen-gsea, fig.cap="GSEA plot showing estrogen response genes enriched at the bottom (suppressed) in the top hit."}
 # Get the logFC profile of the top hit
 top_hit <- out_er$res$signature_id[1]
 gl_top <- gpsa_get_signature(db, top_hit, dataset = "logFC")
@@ -168,7 +209,7 @@ print(head(out_ifn$res[, c("signature_id", "pbgene", "CellLineName",
 
 ### Validate with GSEA Plot
 
-```{r ifn-gsea}
+```{r ifn-gsea, fig.cap="GSEA plot showing interferon response genes enriched at the top (activated) in the top hit."}
 # Get the logFC profile of the top hit
 top_ifn <- out_ifn$res$signature_id[1]
 gl_ifn <- gpsa_get_signature(db, top_ifn, dataset = "logFC")

@@ -128,6 +128,43 @@ If you use GPSA in your research, please cite:
 
 > Shao S. (2025). GPSA: Gene-set Perturbation Signature Analysis. R package version 0.1.0. https://github.com/Shipeng-Guo/GPSA
 
+## Building the Documentation Site
+
+The pkgdown documentation site includes tutorials with **real executed results** from the HDF5 database. Since the database file is too large for GitHub, the site must be built locally.
+
+### Prerequisites
+
+1. Have the HDF5 database file available locally (e.g., `output/gpsa_rankZ_logFC_optimized.h5`)
+2. Set the database path before building:
+
+```r
+# Option 1: Set R option
+options(GPSA.h5 = "/path/to/gpsa_db.h5")
+
+# Option 2: Set environment variable
+Sys.setenv(GPSA_H5 = "/path/to/gpsa_db.h5")
+```
+
+### Build and Deploy
+
+```r
+# Install pkgdown if needed
+install.packages("pkgdown")
+
+# Build site locally (vignettes will execute with real data)
+pkgdown::build_site()
+
+# Deploy to gh-pages branch
+pkgdown::deploy_to_branch()
+```
+
+The `deploy_to_branch()` function will:
+1. Build the site with executed vignettes (tables, figures)
+2. Commit the generated `docs/` to the `gh-pages` branch
+3. Push to GitHub (requires write access)
+
+**Note**: The GitHub Actions workflow is configured for manual trigger only to prevent overwriting the site with non-executed vignettes.
+
 ## License
 
 MIT License

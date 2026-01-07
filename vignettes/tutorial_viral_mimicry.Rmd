@@ -2,13 +2,45 @@
 title: "Tutorial: Multi-channel Event Definition (Viral Mimicry)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Tutorial: Multi-channel Events}
+  %\VignetteIndexEntry{Tutorial: Multi-channel Event Definition (Viral Mimicry)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+# Resolve HDF5 database path (for vignette rendering)
+resolve_h5_path <- function() {
+  h5 <- Sys.getenv("GPSA_H5", unset = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  h5 <- getOption("GPSA.h5", default = "")
+  if (h5 != "" && file.exists(h5)) return(h5)
+  
+  candidates <- c(
+    "../output/gpsa_rankZ_logFC_optimized.h5",
+    "output/gpsa_rankZ_logFC_optimized.h5",
+    "~/gpsa_db.h5"
+  )
+  for (h5 in candidates) {
+    if (file.exists(h5)) return(normalizePath(h5))
+  }
+  return("")
+}
+
+h5_path <- resolve_h5_path()
+has_db <- (h5_path != "")
+
+knitr::opts_chunk$set(
+  eval = has_db,
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+
+if (has_db) {
+  options(GPSA.h5 = h5_path)
+}
 ```
 
 ## Overview
@@ -25,9 +57,6 @@ GPSA allows you to define such **multi-channel events** by combining multiple ge
 ```{r load}
 library(GPSA)
 library(msigdbr)
-
-# Set database path
-options(GPSA.h5 = "/path/to/gpsa_db.h5")
 
 # Load database
 db <- gpsa_load_db(preload_Z = TRUE, verbose = TRUE)
@@ -164,7 +193,7 @@ print(head(out_modes$res_discovery[, c("signature_id", "pbgene",
 
 Validate that a hit truly shows the expected pattern:
 
-```{r validate-hit}
+```{r validate-hit, fig.cap="GSEA validation for a viral mimicry hit showing IFN-alpha activation and E2F suppression."}
 # Pick a gated hit to validate
 if (nrow(gated) > 0) {
   hit <- gated$signature_id[1]
@@ -197,13 +226,16 @@ q_simple <- list(
 )
 
 out_simple <- gpsa_search(db, q_simple, return_components = TRUE)
+
+message("=== Simple 2-channel Top 5 ===")
+print(head(out_simple$res[, c("signature_id", "pbgene", "Score", "tau")], 5))
 ```
 
 ### Weighted Channels
 
 Assign different weights to channels:
 
-```{r weighted}
+```{r weighted, eval=FALSE}
 q_weighted <- list(
   IFNA = list(genes = ifna, sign = +1, weight = 2),   # Double weight
   IFNG = list(genes = ifng, sign = +1, weight = 1),
@@ -224,6 +256,7 @@ strong_gated <- res_vm[
   res_vm$E2F_signed > 0.5 & 
   res_vm$G2M_signed > 0.5, 
 ]
+message(sprintf("Strong gated hits (threshold > 0.5): %d", nrow(strong_gated)))
 ```
 
 ## Other Biological Events to Explore
@@ -258,4 +291,3 @@ Multi-channel queries allow you to:
 ```{r session}
 sessionInfo()
 ```
-

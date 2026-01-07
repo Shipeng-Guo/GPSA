@@ -20,6 +20,9 @@ scripts/
 # pkgdown site (generated locally)
 docs/
 
+# Cursor (IDE) files
+.cursor/
+
 # OS files
 .DS_Store
 Thumbs.db
