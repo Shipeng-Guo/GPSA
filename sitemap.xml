@@ -1,43 +1,123 @@
-<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://shipeng-guo.github.io/GPSA/404.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/LICENSE-text.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/GPSA.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/case_study.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/index.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_batch.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_updown.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_vector_search.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_viral_mimicry.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/authors.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/index.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/GPSA-package.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_attach_channel_scores.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_batch_search.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_build_db.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_collapse_duplicates_maxabs.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compile_query.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compile_signature_vector.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compute_mode_scores.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_fgsea_updown.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_get_h5path.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_get_signature.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_gsea_running.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_install_deps.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_load_db.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query_adaptive.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_meta_stouffer.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_pick_signature.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_plot_gsea.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_postprocess_modes.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_prepare_geneList.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_rank_in.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_score_stats.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_search.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_search_vector.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_set_h5path.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_sparsify_query_energy.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/index.html</loc></url>
-<url><loc>https://shipeng-guo.github.io/GPSA/reference/print.gpsa_db.html</loc></url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/404.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/GPSA.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/case_study.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_batch.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_updown.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_vector_search.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/articles/tutorial_viral_mimicry.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/index.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/GPSA-package.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_attach_channel_scores.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_batch_search.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_build_db.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_collapse_duplicates_maxabs.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compile_query.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compile_signature_vector.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_compute_mode_scores.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_fgsea_updown.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_get_h5path.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_get_signature.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_gsea_running.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_install_deps.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_load_db.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query_adaptive.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_meta_stouffer.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_pick_signature.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_plot_gsea.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_postprocess_modes.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_prepare_geneList.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_rank_in.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_score_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_search.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_search_vector.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_set_h5path.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/gpsa_sparsify_query_energy.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://shipeng-guo.github.io/GPSA/reference/print.gpsa_db.html</loc>
+  </url>
 </urlset>
-

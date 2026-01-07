@@ -5,58 +5,74 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="GPSA">
 <title>Tutorial: Batch Queries and Meta-analysis • GPSA</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tutorial: Batch Queries and Meta-analysis">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tutorial: Batch Queries and Meta-analysis">
+<meta property="og:description" content="GPSA">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
-
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
     <a class="navbar-brand me-2" href="../index.html">GPSA</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
-
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/GPSA.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/GPSA.html">Get started</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorial" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorial</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorial">
-<li><a class="dropdown-item" href="../articles/GPSA.html">Get Started</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Query Types</h6></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_updown.html">Up/Down Bidirectional Query</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_viral_mimicry.html">Multi-channel Events</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_batch.html">Batch Queries &amp; Meta-analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_vector_search.html">Full Vector Search</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../articles/case_study.html">Complete Case Study</a></li>
-  </ul>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorial">Tutorial</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tutorial">
+    <a class="dropdown-item" href="../articles/GPSA.html">Get Started</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Query Types</h6>
+    <a class="dropdown-item" href="../articles/tutorial_updown.html">Up/Down Bidirectional Query</a>
+    <a class="dropdown-item" href="../articles/tutorial_viral_mimicry.html">Multi-channel Events</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/tutorial_batch.html">Batch Queries &amp; Meta-analysis</a>
+    <a class="dropdown-item" href="../articles/tutorial_vector_search.html">Full Vector Search</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/case_study.html">Complete Case Study</a>
+  </div>
 </li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
-</form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Shipeng-Guo/GPSA/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Shipeng-Guo/GPSA/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
 </div>
 
-
+    
   </div>
 </nav><div class="container template-article">
 
@@ -65,11 +81,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Tutorial: Batch Queries and Meta-analysis</h1>
+      <img src="" class="logo" alt=""><h1>Tutorial: Batch Queries and Meta-analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Shipeng-Guo/GPSA/blob/main/vignettes/tutorial_batch.Rmd" class="external-link"><code>vignettes/tutorial_batch.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Shipeng-Guo/GPSA/blob/HEAD/vignettes/tutorial_batch.Rmd" class="external-link"><code>vignettes/tutorial_batch.Rmd</code></a></small>
       <div class="d-none name"><code>tutorial_batch.Rmd</code></div>
     </div>
 
@@ -91,13 +106,13 @@ individually is inefficient. GPSA’s batch query feature:</p>
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shipeng-guo.github.io/GPSA/">GPSA</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Set database path</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>GPSA.h5 <span class="op">=</span> <span class="st">"/path/to/gpsa_db.h5"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GPSA</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load database</span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Preloading /Z into memory ...</span></span>
+<span><span class="co">#&gt; Preloaded /Z (1062.9 MB) into RAM; subsequent queries avoid disk I/O.</span></span>
+<span><span class="co">#&gt; Loaded DB: 19613 genes x 7103 signatures; Z_definition=cmap_rankZ_qnorm</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="preparing-multiple-queries">Preparing Multiple Queries<a class="anchor" aria-label="anchor" href="#preparing-multiple-queries"></a>
@@ -107,12 +122,13 @@ individually is inefficient. GPSA’s batch query feature:</p>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Choose multiple related signatures</span></span>
-<span><span class="co"># Example: different perturbations of related genes</span></span>
-<span><span class="va">sig_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"D21455"</span>, <span class="st">"D20287"</span>, <span class="st">"D23923"</span><span class="op">)</span>  <span class="co"># Replace with actual IDs</span></span>
+<span><span class="co"># Let's use the first 3 signatures from the database for this demo</span></span>
+<span><span class="va">sig_ids</span> <span class="op">&lt;-</span> <span class="va">db</span><span class="op">$</span><span class="va">sigs</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span></span>
-<span><span class="co"># Filter to those present in database</span></span>
-<span><span class="va">sig_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">intersect</a></span><span class="op">(</span><span class="va">sig_ids</span>, <span class="va">db</span><span class="op">$</span><span class="va">sigs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Using %d signatures for batch query"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sig_ids</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Using %d signatures for batch query:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sig_ids</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using 3 signatures for batch query:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sig_ids</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "D10001" "D10002" "D10003"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="build-query-list">Build Query List<a class="anchor" aria-label="anchor" href="#build-query-list"></a>
@@ -126,7 +142,10 @@ individually is inefficient. GPSA’s batch query feature:</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Preview query structure</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">queries</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Query names:"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Query names:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">queries</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "D10001" "D10002" "D10003"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -138,7 +157,16 @@ individually is inefficient. GPSA’s batch query feature:</p>
 <span></span>
 <span><span class="co"># View timing information</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Batch Query Timing ==="</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">timing</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; === Batch Query Timing ===</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">timing</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $elapsed_sec</span></span>
+<span><span class="co">#&gt; [1] 0.159</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $union_size</span></span>
+<span><span class="co">#&gt; [1] 1581</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $block_s</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="batch-results-structure">Batch Results Structure<a class="anchor" aria-label="anchor" href="#batch-results-structure"></a>
 </h3>
@@ -149,8 +177,13 @@ individually is inefficient. GPSA’s batch query feature:</p>
 <span><span class="co"># - z_ref: matrix of z-scores for meta-analysis</span></span>
 <span><span class="co"># - timing: execution time</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">)</span>  <span class="co"># n_signatures x n_queries</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">)</span>  <span class="co"># Query names</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Score matrix dimensions: %d signatures x %d queries"</span>, </span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Score matrix dimensions: 7103 signatures x 3 queries</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Query names:"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Query names:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "D10001" "D10002" "D10003"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="view-results-for-each-query">View Results for Each Query<a class="anchor" aria-label="anchor" href="#view-results-for-each-query"></a>
@@ -163,7 +196,12 @@ individually is inefficient. GPSA’s batch query feature:</p>
 <span><span class="co"># Sort to get top hits for this query</span></span>
 <span><span class="va">top_q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">scores_q1</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Top 10 for Query: %s ==="</span>, <span class="va">query_name</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_q1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; === Top 10 for Query: D10001 ===</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">top_q1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   D10001   D20051   D10711   D20052   D26347   D20335   D21099   D20905 </span></span>
+<span><span class="co">#&gt; 87.20900 87.20900 44.91229 44.91229 43.21641 31.79750 27.91390 27.12615 </span></span>
+<span><span class="co">#&gt;   D25182   D26149 </span></span>
+<span><span class="co">#&gt; 26.74011 25.86339</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -176,29 +214,34 @@ results.</p>
 <span><span class="va">cor_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">bat</span><span class="op">$</span><span class="va">Score</span>, use <span class="op">=</span> <span class="st">"pairwise.complete.obs"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Query Similarity Matrix ==="</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">cor_mat</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; === Query Similarity Matrix ===</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">cor_mat</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        D10001 D10002 D10003</span></span>
+<span><span class="co">#&gt; D10001  1.000  0.638  0.270</span></span>
+<span><span class="co">#&gt; D10002  0.638  1.000  0.491</span></span>
+<span><span class="co">#&gt; D10003  0.270  0.491  1.000</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="interpreting-correlations">Interpreting Correlations<a class="anchor" aria-label="anchor" href="#interpreting-correlations"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Correlation</th>
 <th>Interpretation</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>&gt; 0.7</td>
 <td>Highly similar queries (may be redundant)</td>
 </tr>
-<tr class="even">
+<tr>
 <td>0.3 - 0.7</td>
 <td>Related but distinct queries</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>&lt; 0.3</td>
 <td>Independent queries</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Negative</td>
 <td>Opposite effects</td>
 </tr>
@@ -217,25 +260,47 @@ find consensus hits.</p>
 <span></span>
 <span><span class="co"># View meta-analysis results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Meta-analysis Top 20 ==="</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">meta_res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"z_meta"</span>, <span class="st">"p_meta"</span>, <span class="st">"FDR_meta"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; === Meta-analysis Top 20 ===</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">meta_res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"z_meta"</span>, <span class="st">"p_meta"</span>, <span class="st">"FDR_meta"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     signature_id   z_meta       p_meta     FDR_meta</span></span>
+<span><span class="co">#&gt; 3         D10003 8.385908 5.033589e-17 3.575358e-13</span></span>
+<span><span class="co">#&gt; 2         D10002 8.171812 3.037918e-16 1.078917e-12</span></span>
+<span><span class="co">#&gt; 1         D10001 7.754474 8.871019e-15 1.575271e-11</span></span>
+<span><span class="co">#&gt; 869       D20051 7.754474 8.871019e-15 1.575271e-11</span></span>
+<span><span class="co">#&gt; 241       D10241 7.009264 2.395748e-12 3.403400e-09</span></span>
+<span><span class="co">#&gt; 163       D10163 6.752798 1.450213e-11 1.716810e-08</span></span>
+<span><span class="co">#&gt; 123       D10123 6.541986 6.070722e-11 6.160048e-08</span></span>
+<span><span class="co">#&gt; 79        D10079 6.425545 1.313983e-10 1.166652e-07</span></span>
+<span><span class="co">#&gt; 169       D10169 6.369438 1.897216e-10 1.497325e-07</span></span>
+<span><span class="co">#&gt; 276       D10276 6.260213 3.844512e-10 2.730757e-07</span></span>
+<span><span class="co">#&gt; 102       D10102 6.157218 7.403390e-10 4.780571e-07</span></span>
+<span><span class="co">#&gt; 10        D10010 6.129217 8.831253e-10 5.227366e-07</span></span>
+<span><span class="co">#&gt; 6         D10006 6.062284 1.342024e-09 7.332612e-07</span></span>
+<span><span class="co">#&gt; 266       D10266 5.969460 2.380401e-09 1.138801e-06</span></span>
+<span><span class="co">#&gt; 315       D10315 5.967789 2.404900e-09 1.138801e-06</span></span>
+<span><span class="co">#&gt; 44        D10044 5.915715 3.304368e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 188       D10188 5.913941 3.340184e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 216       D10216 5.905922 3.506794e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 218       D10218 5.876823 4.182144e-09 1.563462e-06</span></span>
+<span><span class="co">#&gt; 29        D10029 5.830931 5.511908e-09 1.864337e-06</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="understanding-meta-analysis-output">Understanding Meta-analysis Output<a class="anchor" aria-label="anchor" href="#understanding-meta-analysis-output"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Column</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>z_meta</code></td>
 <td>Combined z-score (Stouffer’s method)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>p_meta</code></td>
 <td>P-value from combined z-score</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>FDR_meta</code></td>
 <td>False discovery rate (BH correction)</td>
 </tr>
@@ -255,23 +320,55 @@ Consistently high-scoring across all queries - Low
 <span><span class="va">consensus</span> <span class="op">&lt;-</span> <span class="va">consensus</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">consensus</span><span class="op">$</span><span class="va">z_meta</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Consensus Hits (FDR &lt; 0.05): %d ==="</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">consensus</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">consensus</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; === Consensus Hits (FDR &lt; 0.05): 180 ===</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">consensus</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">consensus</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt;     signature_id   z_meta       p_meta     FDR_meta</span></span>
+<span><span class="co">#&gt; 3         D10003 8.385908 5.033589e-17 3.575358e-13</span></span>
+<span><span class="co">#&gt; 2         D10002 8.171812 3.037918e-16 1.078917e-12</span></span>
+<span><span class="co">#&gt; 1         D10001 7.754474 8.871019e-15 1.575271e-11</span></span>
+<span><span class="co">#&gt; 869       D20051 7.754474 8.871019e-15 1.575271e-11</span></span>
+<span><span class="co">#&gt; 241       D10241 7.009264 2.395748e-12 3.403400e-09</span></span>
+<span><span class="co">#&gt; 163       D10163 6.752798 1.450213e-11 1.716810e-08</span></span>
+<span><span class="co">#&gt; 123       D10123 6.541986 6.070722e-11 6.160048e-08</span></span>
+<span><span class="co">#&gt; 79        D10079 6.425545 1.313983e-10 1.166652e-07</span></span>
+<span><span class="co">#&gt; 169       D10169 6.369438 1.897216e-10 1.497325e-07</span></span>
+<span><span class="co">#&gt; 276       D10276 6.260213 3.844512e-10 2.730757e-07</span></span>
+<span><span class="co">#&gt; 102       D10102 6.157218 7.403390e-10 4.780571e-07</span></span>
+<span><span class="co">#&gt; 10        D10010 6.129217 8.831253e-10 5.227366e-07</span></span>
+<span><span class="co">#&gt; 6         D10006 6.062284 1.342024e-09 7.332612e-07</span></span>
+<span><span class="co">#&gt; 266       D10266 5.969460 2.380401e-09 1.138801e-06</span></span>
+<span><span class="co">#&gt; 315       D10315 5.967789 2.404900e-09 1.138801e-06</span></span>
+<span><span class="co">#&gt; 44        D10044 5.915715 3.304368e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 188       D10188 5.913941 3.340184e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 216       D10216 5.905922 3.506794e-09 1.383820e-06</span></span>
+<span><span class="co">#&gt; 218       D10218 5.876823 4.182144e-09 1.563462e-06</span></span>
+<span><span class="co">#&gt; 29        D10029 5.830931 5.511908e-09 1.864337e-06</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="compare-individual-vs-meta-results">Compare Individual vs Meta Results<a class="anchor" aria-label="anchor" href="#compare-individual-vs-meta-results"></a>
 </h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check if a hit is consistent across queries</span></span>
-<span><span class="va">candidate</span> <span class="op">&lt;-</span> <span class="va">consensus</span><span class="op">$</span><span class="va">signature_id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Get individual scores</span></span>
-<span><span class="va">individual_scores</span> <span class="op">&lt;-</span> <span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">[</span><span class="va">candidate</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Individual Scores for %s ==="</span>, <span class="va">candidate</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">individual_scores</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Get individual tau scores</span></span>
-<span><span class="va">individual_tau</span> <span class="op">&lt;-</span> <span class="va">bat</span><span class="op">$</span><span class="va">tau</span><span class="op">[</span><span class="va">candidate</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Individual Tau Scores ==="</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">individual_tau</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">consensus</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">candidate</span> <span class="op">&lt;-</span> <span class="va">consensus</span><span class="op">$</span><span class="va">signature_id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>  </span>
+<span>  <span class="co"># Get individual scores</span></span>
+<span>  <span class="va">individual_scores</span> <span class="op">&lt;-</span> <span class="va">bat</span><span class="op">$</span><span class="va">Score</span><span class="op">[</span><span class="va">candidate</span>, <span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Individual Scores for %s ==="</span>, <span class="va">candidate</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">individual_scores</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Get individual tau scores</span></span>
+<span>  <span class="va">individual_tau</span> <span class="op">&lt;-</span> <span class="va">bat</span><span class="op">$</span><span class="va">tau</span><span class="op">[</span><span class="va">candidate</span>, <span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Individual Tau Scores ==="</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">individual_tau</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; === Individual Scores for D10003 ===</span></span>
+<span><span class="co">#&gt;   D10001   D10002   D10003 </span></span>
+<span><span class="co">#&gt; 13.32977 38.95861 87.20900</span></span>
+<span><span class="co">#&gt; === Individual Tau Scores ===</span></span>
+<span><span class="co">#&gt;   D10001   D10002   D10003 </span></span>
+<span><span class="co">#&gt; 83.90821 99.39462 99.98592</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -292,23 +389,27 @@ Consistently high-scoring across all queries - Low
 <p>You can mix different query types in a batch:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Prepare mixed queries</span></span>
+<span><span class="co"># Note: Each query in the list should be a valid query format</span></span>
 <span><span class="va">mixed_queries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="co"># Up/Down query</span></span>
+<span>  <span class="co"># Up/Down query from first signature</span></span>
 <span>  UD_query <span class="op">=</span> <span class="fu"><a href="../reference/gpsa_make_updown_query.html">gpsa_make_updown_query</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/gpsa_get_signature.html">gpsa_get_signature</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">sig_ids</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, dataset <span class="op">=</span> <span class="st">"logFC"</span><span class="op">)</span>, </span>
 <span>    n_each <span class="op">=</span> <span class="fl">300</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="co"># Single gene set query (example)</span></span>
-<span>  ER_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    ER <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ESR1"</span>, <span class="st">"PGR"</span>, <span class="st">"GREB1"</span>, <span class="st">"TFF1"</span><span class="op">)</span>,  <span class="co"># Example genes</span></span>
+<span>  <span class="co"># Single gene set query (example with TP53 pathway genes)</span></span>
+<span>  TP53_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    TP53 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>      genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"MDM2"</span>, <span class="st">"CDKN1A"</span>, <span class="st">"BAX"</span>, <span class="st">"BBC3"</span>, <span class="st">"PUMA"</span><span class="op">)</span>,</span>
 <span>      sign <span class="op">=</span> <span class="op">+</span><span class="fl">1</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run mixed batch</span></span>
-<span><span class="va">bat_mixed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_batch_search.html">gpsa_batch_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">mixed_queries</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">bat_mixed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_batch_search.html">gpsa_batch_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">mixed_queries</span>, compute_tau <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Mixed Batch Query Timing ==="</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bat_mixed</span><span class="op">$</span><span class="va">timing</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="visualizing-query-relationships">Visualizing Query Relationships<a class="anchor" aria-label="anchor" href="#visualizing-query-relationships"></a>
@@ -322,13 +423,21 @@ Consistently high-scoring across all queries - Low
 <span>  <span class="va">cor_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">as.table</a></span><span class="op">(</span><span class="va">cor_mat</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cor_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Query1"</span>, <span class="st">"Query2"</span>, <span class="st">"Correlation"</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">cor_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Query1</span>, <span class="va">Query2</span>, fill <span class="op">=</span> <span class="va">Correlation</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"blue"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"red"</span>, </span>
-<span>                         midpoint <span class="op">=</span> <span class="fl">0</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Query-to-Query Correlation"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">cor_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Query1</span>, <span class="va">Query2</span>, fill <span class="op">=</span> <span class="va">Correlation</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"blue"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"red"</span>, </span>
+<span>                           midpoint <span class="op">=</span> <span class="fl">0</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Query-to-Query Correlation"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+<div class="figure">
+<img src="tutorial_batch_files/figure-html/visualize-1.png" alt="Heatmap showing correlation between query results." width="672"><p class="caption">
+Heatmap showing correlation between query results.
+</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="performance-considerations">Performance Considerations<a class="anchor" aria-label="anchor" href="#performance-considerations"></a>
@@ -377,20 +486,20 @@ weighted meta-analysis</li>
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Task</th>
 <th>Function</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Batch search</td>
 <td><code>gpsa_batch_search(db, queries)</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td>Query correlation</td>
 <td><code>cor(bat$Score)</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Meta-analysis</td>
 <td><code>gpsa_meta_stouffer(bat$z_ref)</code></td>
 </tr>
@@ -401,28 +510,72 @@ weighted meta-analysis</li>
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.3.2 (2023-10-31)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: Asia/Shanghai</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] ggplot2_3.4.4 GPSA_0.1.0   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] Matrix_1.6-4        gtable_0.3.4        jsonlite_1.8.8     </span></span>
+<span><span class="co">#&gt;  [4] highr_0.10          dplyr_1.1.4         compiler_4.3.2     </span></span>
+<span><span class="co">#&gt;  [7] tidyselect_1.2.0    stringr_1.5.1       rhdf5filters_1.14.1</span></span>
+<span><span class="co">#&gt; [10] jquerylib_0.1.4     systemfonts_1.0.5   scales_1.3.0       </span></span>
+<span><span class="co">#&gt; [13] textshaping_0.3.7   yaml_2.3.8          fastmap_1.1.1      </span></span>
+<span><span class="co">#&gt; [16] lattice_0.22-5      R6_2.5.1            labeling_0.4.3     </span></span>
+<span><span class="co">#&gt; [19] generics_0.1.3      knitr_1.45          tibble_3.2.1       </span></span>
+<span><span class="co">#&gt; [22] desc_1.4.3          munsell_0.5.0       pillar_1.9.0       </span></span>
+<span><span class="co">#&gt; [25] bslib_0.6.1         rlang_1.1.2         utf8_1.2.4         </span></span>
+<span><span class="co">#&gt; [28] cachem_1.0.8        stringi_1.8.3       xfun_0.41          </span></span>
+<span><span class="co">#&gt; [31] fs_1.6.3            sass_0.4.8          memoise_2.0.1      </span></span>
+<span><span class="co">#&gt; [34] cli_3.6.2           withr_2.5.2         pkgdown_2.0.7      </span></span>
+<span><span class="co">#&gt; [37] magrittr_2.0.3      Rhdf5lib_1.24.1     digest_0.6.33      </span></span>
+<span><span class="co">#&gt; [40] grid_4.3.2          rhdf5_2.46.1        lifecycle_1.0.4    </span></span>
+<span><span class="co">#&gt; [43] vctrs_0.6.5         evaluate_0.23       glue_1.6.2         </span></span>
+<span><span class="co">#&gt; [46] farver_2.1.1        ragg_1.2.7          fansi_1.0.6        </span></span>
+<span><span class="co">#&gt; [49] colorspace_2.1-0    rmarkdown_2.25      purrr_1.0.2        </span></span>
+<span><span class="co">#&gt; [52] pkgconfig_2.0.3     tools_4.3.2         htmltools_0.5.7</span></span></code></pre></div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Shipeng Shao.</p>
+  <p></p>
+<p>Developed by Shipeng Shao.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
 </div>
 
+  
 
-
-
+  
 
   </body>
 </html>

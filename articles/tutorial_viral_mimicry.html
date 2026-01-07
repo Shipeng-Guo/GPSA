@@ -5,58 +5,74 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="GPSA">
 <title>Tutorial: Multi-channel Event Definition (Viral Mimicry) • GPSA</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tutorial: Multi-channel Event Definition (Viral Mimicry)">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tutorial: Multi-channel Event Definition (Viral Mimicry)">
+<meta property="og:description" content="GPSA">
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
-
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
     <a class="navbar-brand me-2" href="../index.html">GPSA</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
-
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/GPSA.html">Get started</a></li>
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/GPSA.html">Get started</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorial" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorial</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorial">
-<li><a class="dropdown-item" href="../articles/GPSA.html">Get Started</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Query Types</h6></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_updown.html">Up/Down Bidirectional Query</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_viral_mimicry.html">Multi-channel Events</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_batch.html">Batch Queries &amp; Meta-analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial_vector_search.html">Full Vector Search</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../articles/case_study.html">Complete Case Study</a></li>
-  </ul>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-tutorial">Tutorial</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-tutorial">
+    <a class="dropdown-item" href="../articles/GPSA.html">Get Started</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Query Types</h6>
+    <a class="dropdown-item" href="../articles/tutorial_updown.html">Up/Down Bidirectional Query</a>
+    <a class="dropdown-item" href="../articles/tutorial_viral_mimicry.html">Multi-channel Events</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6>
+    <a class="dropdown-item" href="../articles/tutorial_batch.html">Batch Queries &amp; Meta-analysis</a>
+    <a class="dropdown-item" href="../articles/tutorial_vector_search.html">Full Vector Search</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/case_study.html">Complete Case Study</a>
+  </div>
 </li>
       </ul>
-<ul class="navbar-nav">
-<li class="nav-item"><form class="form-inline" role="search">
- <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
-</form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Shipeng-Guo/GPSA/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Shipeng-Guo/GPSA/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
 </div>
 
-
+    
   </div>
 </nav><div class="container template-article">
 
@@ -65,11 +81,10 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Tutorial: Multi-channel Event Definition (Viral Mimicry)</h1>
+      <img src="" class="logo" alt=""><h1>Tutorial: Multi-channel Event Definition (Viral Mimicry)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Shipeng-Guo/GPSA/blob/main/vignettes/tutorial_viral_mimicry.Rmd" class="external-link"><code>vignettes/tutorial_viral_mimicry.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Shipeng-Guo/GPSA/blob/HEAD/vignettes/tutorial_viral_mimicry.Rmd" class="external-link"><code>vignettes/tutorial_viral_mimicry.Rmd</code></a></small>
       <div class="d-none name"><code>tutorial_viral_mimicry.Rmd</code></div>
     </div>
 
@@ -95,17 +110,22 @@ by combining multiple gene sets with different expected directions.</p>
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shipeng-guo.github.io/GPSA/">GPSA</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GPSA</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://igordot.github.io/msigdbr/" class="external-link">msigdbr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Set database path</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>GPSA.h5 <span class="op">=</span> <span class="st">"/path/to/gpsa_db.h5"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load database</span></span>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Preloading /Z into memory ...</span></span>
+<span><span class="co">#&gt; Preloaded /Z (1062.9 MB) into RAM; subsequent queries avoid disk I/O.</span></span>
+<span><span class="co">#&gt; Loaded DB: 19613 genes x 7103 signatures; Z_definition=cmap_rankZ_qnorm</span></span>
 <span></span>
 <span><span class="co"># Get Hallmark gene sets</span></span>
 <span><span class="va">hallmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://igordot.github.io/msigdbr/reference/msigdbr.html" class="external-link">msigdbr</a></span><span class="op">(</span>species <span class="op">=</span> <span class="st">"Homo sapiens"</span>, category <span class="op">=</span> <span class="st">"H"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `category` argument of `msigdbr()` is deprecated as of msigdbr 10.0.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `collection` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="va">get_hallmark_genes</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">gs_name</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">hallmark</span><span class="op">$</span><span class="va">gene_symbol</span><span class="op">[</span><span class="va">hallmark</span><span class="op">$</span><span class="va">gs_name</span> <span class="op">==</span> <span class="va">gs_name</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
@@ -126,9 +146,13 @@ by combining multiple gene sets with different expected directions.</p>
 <span><span class="va">g2m</span> <span class="op">&lt;-</span> <span class="fu">get_hallmark_genes</span><span class="op">(</span><span class="st">"HALLMARK_G2M_CHECKPOINT"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"IFN-alpha: %d genes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ifna</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; IFN-alpha: 97 genes</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"IFN-gamma: %d genes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ifng</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; IFN-gamma: 200 genes</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"E2F targets: %d genes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">e2f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"G2M checkpoint: %d genes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">g2m</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; E2F targets: 200 genes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"G2M checkpoint: %d genes"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">g2m</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; G2M checkpoint: 200 genes</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="construct-multi-channel-query">Construct Multi-channel Query<a class="anchor" aria-label="anchor" href="#construct-multi-channel-query"></a>
@@ -155,8 +179,20 @@ by combining multiple gene sets with different expected directions.</p>
 <span></span>
 <span><span class="co"># View top hits by total score</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Viral Mimicry Top 10 (Total Score) ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Viral Mimicry Top 10 (Total Score) ===</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out_vm</span><span class="op">$</span><span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>, <span class="st">"CellLineName"</span>,</span>
-<span>                          <span class="st">"Score"</span>, <span class="st">"tau"</span>, <span class="st">"FDR_rank"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                          <span class="st">"Score"</span>, <span class="st">"tau"</span>, <span class="st">"FDR_rank"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id  pbgene CellLineName    Score      tau  FDR_rank</span></span>
+<span><span class="co">#&gt; 4040       D23964    IMP3      HUVEC-C 80.82056 99.98592 0.5000000</span></span>
+<span><span class="co">#&gt; 2961       D22388   PTPN2         A549 76.48941 99.95776 0.7500000</span></span>
+<span><span class="co">#&gt; 1604       D20906     PXN         PC-3 76.41936 99.92961 0.8333333</span></span>
+<span><span class="co">#&gt; 1790       D21102    BTF3         PC-3 75.88126 99.90145 0.8750000</span></span>
+<span><span class="co">#&gt; 2963       D22390   PTPN2        HT-29 75.27526 99.87329 0.9000000</span></span>
+<span><span class="co">#&gt; 6029       D26955 IRF2BP2        THP-1 75.20142 99.84514 0.9166667</span></span>
+<span><span class="co">#&gt; 2714       D22119  NUSAP1         PC-3 73.98689 99.81698 0.9285714</span></span>
+<span><span class="co">#&gt; 6028       D26954 IRF2BP2        THP-1 73.86547 99.78882 0.9375000</span></span>
+<span><span class="co">#&gt; 3837       D23634    TERT      UM-UC-3 73.75627 99.76066 0.9444444</span></span>
+<span><span class="co">#&gt; 6638       D27783 IGF2BP3      MOLM-13 73.38466 99.73251 0.9500000</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="gated-filtering-require-all-channels">Gated Filtering: Require All Channels<a class="anchor" aria-label="anchor" href="#gated-filtering-require-all-channels"></a>
@@ -177,9 +213,16 @@ direction.</p>
 <span></span>
 <span><span class="co"># Preview channel scores</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Sample with Channel Scores ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Sample with Channel Scores ===</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_vm</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>, <span class="st">"Score"</span>,</span>
 <span>                      <span class="st">"IFNA_signed"</span>, <span class="st">"IFNG_signed"</span>, </span>
-<span>                      <span class="st">"E2F_signed"</span>, <span class="st">"G2M_signed"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                      <span class="st">"E2F_signed"</span>, <span class="st">"G2M_signed"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id pbgene    Score IFNA_signed IFNG_signed E2F_signed G2M_signed</span></span>
+<span><span class="co">#&gt; 4040       D23964   IMP3 80.82056    23.05692    23.54559   18.73520   15.48285</span></span>
+<span><span class="co">#&gt; 2961       D22388  PTPN2 76.48941    16.39841    18.13313   22.65238   19.30549</span></span>
+<span><span class="co">#&gt; 1604       D20906    PXN 76.41936    19.35673    16.65328   21.14198   19.26737</span></span>
+<span><span class="co">#&gt; 1790       D21102   BTF3 75.88126    23.36150    19.47264   18.23800   14.80913</span></span>
+<span><span class="co">#&gt; 2963       D22390  PTPN2 75.27526    19.42001    17.51227   20.44469   17.89829</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="apply-gate-all-channels-positive">Apply Gate: All Channels Positive<a class="anchor" aria-label="anchor" href="#apply-gate-all-channels-positive"></a>
@@ -195,11 +238,55 @@ direction.</p>
 <span><span class="va">gated</span> <span class="op">&lt;-</span> <span class="va">gated</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">gated</span><span class="op">$</span><span class="va">Score</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"=== Gated Hits: %d signatures ==="</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">gated</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Gated Hits: 2672 signatures ===</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Viral Mimicry Gated Top 20 ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Viral Mimicry Gated Top 20 ===</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gated</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>, <span class="st">"CellLineName"</span>, <span class="st">"Score"</span>,</span>
 <span>                     <span class="st">"IFNA_signed"</span>, <span class="st">"IFNG_signed"</span>, </span>
-<span>                     <span class="st">"E2F_signed"</span>, <span class="st">"G2M_signed"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                     <span class="st">"E2F_signed"</span>, <span class="st">"G2M_signed"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id  pbgene CellLineName    Score IFNA_signed IFNG_signed</span></span>
+<span><span class="co">#&gt; 4040       D23964    IMP3      HUVEC-C 80.82056    23.05692    23.54559</span></span>
+<span><span class="co">#&gt; 2961       D22388   PTPN2         A549 76.48941    16.39841    18.13313</span></span>
+<span><span class="co">#&gt; 1604       D20906     PXN         PC-3 76.41936    19.35673    16.65328</span></span>
+<span><span class="co">#&gt; 1790       D21102    BTF3         PC-3 75.88126    23.36150    19.47264</span></span>
+<span><span class="co">#&gt; 2963       D22390   PTPN2        HT-29 75.27526    19.42001    17.51227</span></span>
+<span><span class="co">#&gt; 6029       D26955 IRF2BP2        THP-1 75.20142    19.68966    21.27978</span></span>
+<span><span class="co">#&gt; 2714       D22119  NUSAP1         PC-3 73.98689    16.23092    15.33348</span></span>
+<span><span class="co">#&gt; 6028       D26954 IRF2BP2        THP-1 73.86547    20.43626    22.15407</span></span>
+<span><span class="co">#&gt; 3837       D23634    TERT      UM-UC-3 73.75627    20.53251    16.89838</span></span>
+<span><span class="co">#&gt; 6638       D27783 IGF2BP3      MOLM-13 73.38466    17.78614    18.63235</span></span>
+<span><span class="co">#&gt; 1682       D20989  CTNNB1       Hep G2 73.35977    20.29685    18.23717</span></span>
+<span><span class="co">#&gt; 6594       D27729   NIPBL        A-375 72.89979    20.83904    18.79654</span></span>
+<span><span class="co">#&gt; 4627       D24930   FANCI         PC-3 72.63745    20.34521    19.50712</span></span>
+<span><span class="co">#&gt; 3722       D23458   CEBPA       MV4-11 72.09971    18.21334    19.79369</span></span>
+<span><span class="co">#&gt; 5499       D26252     JUN         PC-3 71.57069    19.03252    16.23662</span></span>
+<span><span class="co">#&gt; 5517       D26277    SFPQ       P3HR-1 71.56829    19.20045    20.32889</span></span>
+<span><span class="co">#&gt; 1824       D21139 SUPT16H       P3HR-1 70.77408    16.17653    17.97183</span></span>
+<span><span class="co">#&gt; 5852       D26728    LDHB         A549 70.46477    22.18994    22.84130</span></span>
+<span><span class="co">#&gt; 4174       D24174     MPI       TWNT-4 70.31453    17.85219    19.86785</span></span>
+<span><span class="co">#&gt; 2715       D22120  NUSAP1         PC-3 70.20553    20.10387    19.14729</span></span>
+<span><span class="co">#&gt;      E2F_signed G2M_signed</span></span>
+<span><span class="co">#&gt; 4040   18.73520   15.48285</span></span>
+<span><span class="co">#&gt; 2961   22.65238   19.30549</span></span>
+<span><span class="co">#&gt; 1604   21.14198   19.26737</span></span>
+<span><span class="co">#&gt; 1790   18.23800   14.80913</span></span>
+<span><span class="co">#&gt; 2963   20.44469   17.89829</span></span>
+<span><span class="co">#&gt; 6029   19.81440   14.41758</span></span>
+<span><span class="co">#&gt; 2714   23.45595   18.96653</span></span>
+<span><span class="co">#&gt; 6028   18.55559   12.71955</span></span>
+<span><span class="co">#&gt; 3837   20.64112   15.68426</span></span>
+<span><span class="co">#&gt; 6638   21.42091   15.54527</span></span>
+<span><span class="co">#&gt; 1682   19.25981   15.56594</span></span>
+<span><span class="co">#&gt; 6594   17.48226   15.78195</span></span>
+<span><span class="co">#&gt; 4627   18.82195   13.96317</span></span>
+<span><span class="co">#&gt; 3722   17.64701   16.44567</span></span>
+<span><span class="co">#&gt; 5499   19.91456   16.38700</span></span>
+<span><span class="co">#&gt; 5517   17.00628   15.03267</span></span>
+<span><span class="co">#&gt; 1824   20.20723   16.41848</span></span>
+<span><span class="co">#&gt; 5852   13.20959   12.22394</span></span>
+<span><span class="co">#&gt; 4174   18.77256   13.82193</span></span>
+<span><span class="co">#&gt; 2715   16.68750   14.26687</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -225,43 +312,67 @@ all channel signed scores</li>
 <span></span>
 <span><span class="co"># Phenocopy mode: all channels must agree</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Phenocopy Mode Top 10 ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Phenocopy Mode Top 10 ===</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out_modes</span><span class="op">$</span><span class="va">res_similarity</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>,</span>
 <span>                                         <span class="st">"Score_bi"</span>, <span class="st">"Balance"</span>, <span class="st">"Driver"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id  pbgene Score_bi   Balance Driver</span></span>
+<span><span class="co">#&gt; 2963       D22390   PTPN2 17.51227 0.8565681    E2F</span></span>
+<span><span class="co">#&gt; 1604       D20906     PXN 16.65328 0.7876879    E2F</span></span>
+<span><span class="co">#&gt; 3722       D23458   CEBPA 16.44567 0.8308541   IFNG</span></span>
+<span><span class="co">#&gt; 2961       D22388   PTPN2 16.39841 0.7239153    E2F</span></span>
+<span><span class="co">#&gt; 5499       D26252     JUN 16.23662 0.8153137    E2F</span></span>
+<span><span class="co">#&gt; 1824       D21139 SUPT16H 16.17653 0.8005318    E2F</span></span>
+<span><span class="co">#&gt; 6594       D27729   NIPBL 15.78195 0.7573263   IFNA</span></span>
+<span><span class="co">#&gt; 3837       D23634    TERT 15.68426 0.7598549    E2F</span></span>
+<span><span class="co">#&gt; 1682       D20989  CTNNB1 15.56594 0.7669140   IFNA</span></span>
+<span><span class="co">#&gt; 6638       D27783 IGF2BP3 15.54527 0.7257053    E2F</span></span>
 <span></span>
 <span><span class="co"># Discovery mode: at least one channel strong</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Discovery Mode Top 10 ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Discovery Mode Top 10 ===</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out_modes</span><span class="op">$</span><span class="va">res_discovery</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>,</span>
-<span>                                        <span class="st">"Score_uni"</span>, <span class="st">"Balance"</span>, <span class="st">"Driver"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                                        <span class="st">"Score_uni"</span>, <span class="st">"Balance"</span>, <span class="st">"Driver"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id  pbgene Score_uni   Balance Driver</span></span>
+<span><span class="co">#&gt; 3265       D22814   HDAC5  28.23054 0.2189583    E2F</span></span>
+<span><span class="co">#&gt; 2962       D22389   PTPN2  27.25872 0.2158187    E2F</span></span>
+<span><span class="co">#&gt; 2796       D22203   AURKA  27.00982 0.1107756    E2F</span></span>
+<span><span class="co">#&gt; 5426       D26149     FBL  26.96748 0.1095885    E2F</span></span>
+<span><span class="co">#&gt; 3493       D23141    PBX1  26.87870 0.2499327    E2F</span></span>
+<span><span class="co">#&gt; 5343       D26030    CBX7  26.80174 0.1190390    E2F</span></span>
+<span><span class="co">#&gt; 2061       D21403 GAPLINC  26.75002 0.1883430   IFNG</span></span>
+<span><span class="co">#&gt; 6243       D27282 THUMPD3  26.68152 0.3063102    E2F</span></span>
+<span><span class="co">#&gt; 2708       D22113    MDM2  26.56194 0.1034633    E2F</span></span>
+<span><span class="co">#&gt; 2317       D21681    ZBP1  26.53489 0.2191550    E2F</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="interpreting-dual-mode-results">Interpreting Dual-mode Results<a class="anchor" aria-label="anchor" href="#interpreting-dual-mode-results"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Scenario</th>
 <th>Phenocopy Score</th>
 <th>Discovery Score</th>
 <th>Interpretation</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>All channels strong</td>
 <td>High</td>
 <td>High</td>
 <td>True phenocopy</td>
 </tr>
-<tr class="even">
+<tr>
 <td>All channels weak</td>
 <td>Low</td>
 <td>Low</td>
 <td>Not a hit</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>One channel very strong, others weak</td>
 <td>Low</td>
 <td>High</td>
 <td>Partial match</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Balanced moderate signal</td>
 <td>Moderate</td>
 <td>Moderate</td>
@@ -289,6 +400,18 @@ all channel signed scores</li>
 <span>  <span class="fu"><a href="../reference/gpsa_plot_gsea.html">gpsa_plot_gsea</a></span><span class="op">(</span><span class="va">gl_hit</span>, <span class="va">e2f</span>,</span>
 <span>                 main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">hit</span>, <span class="st">" vs E2F targets (expect DOWN)"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
+<div class="figure">
+<img src="tutorial_viral_mimicry_files/figure-html/validate-hit-1.png" alt="GSEA validation for a viral mimicry hit showing IFN-alpha activation and E2F suppression." width="672"><p class="caption">
+GSEA validation for a viral mimicry hit showing IFN-alpha activation and
+E2F suppression.
+</p>
+</div>
+<div class="figure">
+<img src="tutorial_viral_mimicry_files/figure-html/validate-hit-2.png" alt="GSEA validation for a viral mimicry hit showing IFN-alpha activation and E2F suppression." width="672"><p class="caption">
+GSEA validation for a viral mimicry hit showing IFN-alpha activation and
+E2F suppression.
+</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="customizing-the-event-definition">Customizing the Event Definition<a class="anchor" aria-label="anchor" href="#customizing-the-event-definition"></a>
@@ -307,7 +430,17 @@ all channel signed scores</li>
 <span>  CYCLE_DOWN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">cycle_combined</span>, sign <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">out_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_search.html">gpsa_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">q_simple</span>, return_components <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">out_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gpsa_search.html">gpsa_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">q_simple</span>, return_components <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"=== Simple 2-channel Top 5 ==="</span><span class="op">)</span></span>
+<span><span class="co">#&gt; === Simple 2-channel Top 5 ===</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out_simple</span><span class="op">$</span><span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"signature_id"</span>, <span class="st">"pbgene"</span>, <span class="st">"Score"</span>, <span class="st">"tau"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      signature_id  pbgene    Score      tau</span></span>
+<span><span class="co">#&gt; 4040       D23964    IMP3 45.87679 99.98592</span></span>
+<span><span class="co">#&gt; 6029       D26955 IRF2BP2 44.12715 99.95776</span></span>
+<span><span class="co">#&gt; 2961       D22388   PTPN2 43.98372 99.92961</span></span>
+<span><span class="co">#&gt; 1604       D20906     PXN 43.44806 99.90145</span></span>
+<span><span class="co">#&gt; 6028       D26954 IRF2BP2 43.30814 99.87329</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="weighted-channels">Weighted Channels<a class="anchor" aria-label="anchor" href="#weighted-channels"></a>
@@ -332,7 +465,9 @@ all channel signed scores</li>
 <span>  <span class="va">res_vm</span><span class="op">$</span><span class="va">IFNG_signed</span> <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="op">&amp;</span> </span>
 <span>  <span class="va">res_vm</span><span class="op">$</span><span class="va">E2F_signed</span> <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="op">&amp;</span> </span>
 <span>  <span class="va">res_vm</span><span class="op">$</span><span class="va">G2M_signed</span> <span class="op">&gt;</span> <span class="fl">0.5</span>, </span>
-<span><span class="op">]</span></span></code></pre></div>
+<span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Strong gated hits (threshold &gt; 0.5): %d"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">strong_gated</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Strong gated hits (threshold &gt; 0.5): 2413</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -344,24 +479,24 @@ all channel signed scores</li>
 <col width="41%">
 <col width="58%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Event</th>
 <th>Channels</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Senescence</td>
 <td>p53 pathway UP + Cell cycle DOWN + SASP UP</td>
 </tr>
-<tr class="even">
+<tr>
 <td>EMT</td>
 <td>Epithelial markers DOWN + Mesenchymal markers UP</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Stem-like state</td>
 <td>Stemness genes UP + Differentiation markers DOWN</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ferroptosis</td>
 <td>Iron metabolism UP + Lipid peroxidation UP + GPX4 targets DOWN</td>
 </tr>
@@ -402,28 +537,72 @@ from partial matches</p>
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.3.2 (2023-10-31)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">#&gt;  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">#&gt; [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; time zone: Asia/Shanghai</span></span>
+<span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] msigdbr_25.1.1 GPSA_0.1.0    </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;  [1] Matrix_1.6-4        babelgene_22.9      jsonlite_1.8.8     </span></span>
+<span><span class="co">#&gt;  [4] highr_0.10          crayon_1.5.2        dplyr_1.1.4        </span></span>
+<span><span class="co">#&gt;  [7] compiler_4.3.2      tidyselect_1.2.0    stringr_1.5.1      </span></span>
+<span><span class="co">#&gt; [10] rhdf5filters_1.14.1 assertthat_0.2.1    jquerylib_0.1.4    </span></span>
+<span><span class="co">#&gt; [13] systemfonts_1.0.5   textshaping_0.3.7   yaml_2.3.8         </span></span>
+<span><span class="co">#&gt; [16] fastmap_1.1.1       lattice_0.22-5      R6_2.5.1           </span></span>
+<span><span class="co">#&gt; [19] generics_0.1.3      curl_5.2.0          knitr_1.45         </span></span>
+<span><span class="co">#&gt; [22] tibble_3.2.1        desc_1.4.3          bslib_0.6.1        </span></span>
+<span><span class="co">#&gt; [25] pillar_1.9.0        rlang_1.1.2         utf8_1.2.4         </span></span>
+<span><span class="co">#&gt; [28] cachem_1.0.8        stringi_1.8.3       xfun_0.41          </span></span>
+<span><span class="co">#&gt; [31] fs_1.6.3            sass_0.4.8          memoise_2.0.1      </span></span>
+<span><span class="co">#&gt; [34] cli_3.6.2           withr_2.5.2         Rhdf5lib_1.24.1    </span></span>
+<span><span class="co">#&gt; [37] pkgdown_2.0.7       magrittr_2.0.3      digest_0.6.33      </span></span>
+<span><span class="co">#&gt; [40] grid_4.3.2          rhdf5_2.46.1        lifecycle_1.0.4    </span></span>
+<span><span class="co">#&gt; [43] vctrs_0.6.5         evaluate_0.23       glue_1.6.2         </span></span>
+<span><span class="co">#&gt; [46] ragg_1.2.7          fansi_1.0.6         rmarkdown_2.25     </span></span>
+<span><span class="co">#&gt; [49] purrr_1.0.2         tools_4.3.2         pkgconfig_2.0.3    </span></span>
+<span><span class="co">#&gt; [52] htmltools_0.5.7</span></span></code></pre></div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Shipeng Shao.</p>
+  <p></p>
+<p>Developed by Shipeng Shao.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
 </div>
 
+  
 
-
-
+  
 
   </body>
 </html>
