@@ -33,6 +33,7 @@ reference:
     desc: Main search and database functions
     contents:
       - gpsa_load_db
+      - print.gpsa_db
       - gpsa_search
       - gpsa_search_vector
       - gpsa_batch_search
