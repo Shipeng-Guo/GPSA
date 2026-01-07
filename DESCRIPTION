@@ -1,0 +1,31 @@
+Package: GPSA
+Type: Package
+Title: Gene-set Perturbation Signature Analysis
+Version: 0.1.0
+Authors@R: person("Shipeng", "Shao", email = "shaozhen1995@gmail.com", role = c("aut", "cre"))
+Description: GPSA provides fast similarity search over large-scale perturbation
+    signature databases using cMAP/GSEA-style rankZ semantics. It supports
+    single gene-set queries, up/down bidirectional queries, multi-channel
+    event definitions, batch queries, and vector-based full geneList searches.
+    HDF5-based storage enables memory-efficient querying with optional
+    preloading for maximum speed (~0.15s per query in memory mode).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.5.0)
+Imports:
+    rhdf5,
+    Matrix,
+    stats,
+    graphics,
+    grDevices,
+    utils
+Suggests:
+    matrixStats,
+    msigdbr,
+    fgsea,
+    ggplot2,
+    testthat (>= 3.0.0)
+biocViews: GeneSetEnrichment, Transcriptomics, Software
+RoxygenNote: 7.2.3
+

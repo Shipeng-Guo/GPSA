@@ -1,0 +1,21 @@
+# RStudio project files
+^.*\.Rproj$
+^\.Rproj\.user$
+
+# Data and output directories (not part of package)
+^data$
+^output$
+^resource$
+^scripts$
+
+# Git files
+^\.git$
+^\.gitignore$
+
+# Development files
+^\.Rbuildignore$
+^LICENSE\.md$
+^README\.Rmd$
+^cran-comments\.md$
+^\.github$
+

@@ -1,0 +1,22 @@
+# R session files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio project file
+*.Rproj
+
+# Data and output directories (not part of package)
+data/
+output/
+resource/
+scripts/
+
+# R package build artifacts
+*.tar.gz
+*.Rcheck/
+
+# OS files
+.DS_Store
+Thumbs.db
