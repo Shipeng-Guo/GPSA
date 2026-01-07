@@ -38,6 +38,14 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-tutorial">
 <li><a class="dropdown-item" href="articles/GPSA.html">Get Started</a></li>
     <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Query Types</h6></li>
+    <li><a class="dropdown-item" href="articles/tutorial_updown.html">Up/Down Bidirectional Query</a></li>
+    <li><a class="dropdown-item" href="articles/tutorial_viral_mimicry.html">Multi-channel Events</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Advanced Topics</h6></li>
+    <li><a class="dropdown-item" href="articles/tutorial_batch.html">Batch Queries &amp; Meta-analysis</a></li>
+    <li><a class="dropdown-item" href="articles/tutorial_vector_search.html">Full Vector Search</a></li>
+    <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="articles/case_study.html">Complete Case Study</a></li>
   </ul>
 </li>
@@ -57,177 +65,170 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="gpsa-gene-set-perturbation-signature-analysis">GPSA: Gene-set Perturbation Signature Analysis<a class="anchor" aria-label="anchor" href="#gpsa-gene-set-perturbation-signature-analysis"></a>
 </h1></div>
-<p>GPSA provides fast similarity search over large-scale perturbation signature databases using cMAP/GSEA-style rankZ semantics.</p>
+<p><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+<p><strong>GPSA</strong> provides fast similarity search over large-scale perturbation signature databases using cMAP/GSEA-style rankZ semantics.</p>
 <div class="section level2">
-<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+<h2 id="why-gpsa">Why GPSA?<a class="anchor" aria-label="anchor" href="#why-gpsa"></a>
+</h2>
+<p>Large-scale perturbation experiments (e.g., CRISPR knockouts, drug treatments) generate thousands of transcriptomic signatures. Given a query gene set or expression profile, researchers often need to find which perturbations produce <strong>similar</strong> or <strong>opposite</strong> effects. Traditional connectivity map (cMAP) approaches require iterating over thousands of signatures, which can be slow.</p>
+<p><strong>GPSA</strong> solves this by:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Pre-computing rankZ-transformed signatures</strong> stored in HDF5 format</li>
+<li>
+<strong>Enabling sub-second queries</strong> via optimized matrix operations</li>
+<li>
+<strong>Supporting flexible query types</strong> from simple gene sets to complex multi-channel events</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="when-to-use-gpsa">When to Use GPSA<a class="anchor" aria-label="anchor" href="#when-to-use-gpsa"></a>
 </h2>
 <ul>
 <li>
-<strong><a href="https://shipeng-guo.github.io/GPSA/articles/GPSA.html">Get Started Tutorial</a></strong> - Quick start guide</li>
+<strong>Drug repurposing</strong>: Find compounds that reverse a disease signature</li>
 <li>
-<strong><a href="https://shipeng-guo.github.io/GPSA/articles/case_study.html">Complete Case Study</a></strong> - Full examples with ER pathway, Viral mimicry, etc.</li>
+<strong>Mechanism discovery</strong>: Identify genes whose perturbation mimics your phenotype</li>
 <li>
-<strong><a href="https://shipeng-guo.github.io/GPSA/">Documentation Site</a></strong> - Full API reference</li>
+<strong>Pathway analysis</strong>: Query with pathway gene sets to find relevant perturbations</li>
+<li>
+<strong>Cross-study comparison</strong>: Compare your signature against public perturbation databases</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+<h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h2>
-<ul>
+<table class="table">
+<colgroup>
+<col width="40%">
+<col width="59%">
+</colgroup>
+<thead><tr class="header">
+<th>Feature</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Fast Search</strong></td>
+<td>~0.15s per query in memory mode, ~7s in disk mode</td>
+</tr>
+<tr class="even">
+<td><strong>Multiple Query Types</strong></td>
+<td>Single gene set, Up/Down bidirectional, multi-channel events, batch queries</td>
+</tr>
+<tr class="odd">
+<td><strong>HDF5 Storage</strong></td>
+<td>Memory-efficient storage for 20k genes x 7k+ signatures</td>
+</tr>
+<tr class="even">
+<td><strong>Dual-mode Scoring</strong></td>
+<td>Phenocopy (strict) and Discovery (one-sided) modes</td>
+</tr>
+<tr class="odd">
+<td><strong>Full Vector Search</strong></td>
+<td>Query with complete gene expression profiles</td>
+</tr>
+<tr class="even">
+<td><strong>GSEA Visualization</strong></td>
+<td>Built-in running enrichment plots</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="how-it-works">How It Works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
+</h2>
+<p>GPSA uses <strong>rankZ semantics</strong> similar to the Connectivity Map methodology:</p>
+<ol style="list-style-type: decimal">
 <li>
-<strong>Fast Search</strong>: ~0.15s per query in memory mode, ~7s in disk mode</li>
+<strong>Database signatures</strong> are rank-transformed and Z-scored (rankZ)</li>
 <li>
-<strong>Multiple Query Types</strong>: Single gene set, Up/Down bidirectional, multi-channel events, batch queries</li>
+<strong>Query gene sets</strong> are compiled into sparse indicator vectors with direction signs</li>
 <li>
-<strong>HDF5 Storage</strong>: Memory-efficient storage for 20k genes × 7k+ signatures</li>
+<strong>Similarity scores</strong> are computed via efficient matrix multiplication</li>
 <li>
-<strong>Dual-mode Scoring</strong>: Phenocopy (strict) and Discovery (one-sided) modes</li>
-<li>
-<strong>Full Vector Search</strong>: Query with complete gene expression profiles</li>
-</ul>
+<strong>Statistical significance</strong> is assessed using empirical null distributions (tau scores)</li>
+</ol>
+<p>This approach captures the <strong>relative ordering</strong> of genes rather than absolute expression values, making it robust across platforms and batches.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="方法1-从本地源码安装推荐">方法1: 从本地源码安装（推荐）<a class="anchor" aria-label="anchor" href="#%E6%96%B9%E6%B3%951-%E4%BB%8E%E6%9C%AC%E5%9C%B0%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85%E6%8E%A8%E8%8D%90"></a>
-</h3>
+<p>Install GPSA directly from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 设置镜像加速（中国用户）</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="st">"repos"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>CRAN <span class="op">=</span> <span class="st">"https://mirrors.tuna.tsinghua.edu.cn/CRAN/"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>BioC_mirror <span class="op">=</span> <span class="st">"https://mirrors.westlake.edu.cn/bioconductor"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Install remotes if needed</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span><span class="co"># 安装依赖</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"rhdf5"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Matrix"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># 从本地源码安装（将路径替换为实际GPSA目录）</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"/path/to/GPSA"</span>, repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
-</div>
+<span><span class="co"># Install GPSA</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Shipeng-Guo/GPSA"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="方法2-使用devtools安装">方法2: 使用devtools安装<a class="anchor" aria-label="anchor" href="#%E6%96%B9%E6%B3%952-%E4%BD%BF%E7%94%A8devtools%E5%AE%89%E8%A3%85"></a>
+<h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h3>
+<p>GPSA requires the following packages (installed automatically):</p>
+<ul>
+<li>
+<strong>rhdf5</strong> (Bioconductor) - HDF5 file handling</li>
+<li>
+<strong>Matrix</strong> - Sparse matrix operations</li>
+</ul>
+<p>Optional packages for enhanced functionality:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 安装devtools（如果没有）</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 从本地目录安装</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_local</span><span class="op">(</span><span class="st">"/path/to/GPSA"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 或直接加载（开发模式，无需安装）</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="st">"/path/to/GPSA"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="方法3-终端命令行安装">方法3: 终端命令行安装<a class="anchor" aria-label="anchor" href="#%E6%96%B9%E6%B3%953-%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%89%E8%A3%85"></a>
-</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">cd</span> /path/to/GPSA  <span class="co"># 进入包目录</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">R</span> CMD build .     <span class="co"># 构建tar.gz包</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL GPSA_<span class="pp">*</span>.tar.gz  <span class="co"># 安装</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="可选依赖">可选依赖<a class="anchor" aria-label="anchor" href="#%E5%8F%AF%E9%80%89%E4%BE%9D%E8%B5%96"></a>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># GSEA绘图（推荐）</span></span>
+<code class="sourceCode R"><span><span class="co"># For GSEA plots (recommended)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"fgsea"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># MSigDB基因集</span></span>
+<span><span class="co"># For MSigDB gene sets</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"msigdbr"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 高级绘图</span></span>
+<span><span class="co"># For advanced plotting</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="section level3">
-<h3 id="id_1-first-time-setup-download-hdf5-database">1. First-time Setup: Download HDF5 Database<a class="anchor" aria-label="anchor" href="#id_1-first-time-setup-download-hdf5-database"></a>
-</h3>
-<p>Download the pre-built HDF5 database file and set the path:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shipeng-guo.github.io/GPSA/">GPSA</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Set path once (persists for session)</span></span>
+<span><span class="co"># Set path to HDF5 database (download separately)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>GPSA.h5 <span class="op">=</span> <span class="st">"/path/to/gpsa_db.h5"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Or set via environment variable</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>GPSA_H5 <span class="op">=</span> <span class="st">"/path/to/gpsa_db.h5"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_2-load-database">2. Load Database<a class="anchor" aria-label="anchor" href="#id_2-load-database"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Disk mode (slower queries, less memory)</span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co"># Load database (memory mode for fast queries)</span></span>
+<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Memory mode (fast queries, ~1GB RAM)</span></span>
-<span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_load_db.html">gpsa_load_db</a></span><span class="op">(</span>preload_Z <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_3-basic-query-examples">3. Basic Query Examples<a class="anchor" aria-label="anchor" href="#id_3-basic-query-examples"></a>
-</h3>
-<div class="section level4">
-<h4 id="single-gene-set-query">Single Gene Set Query<a class="anchor" aria-label="anchor" href="#single-gene-set-query"></a>
-</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Query with a gene set</span></span>
-<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>MyGenes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"BRCA1"</span>, <span class="st">"EGFR"</span>, <span class="va">...</span><span class="op">)</span>, sign <span class="op">=</span> <span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Query with a gene set</span></span>
+<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  MyGenes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"BRCA1"</span>, <span class="st">"EGFR"</span><span class="op">)</span>, sign <span class="op">=</span> <span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_search.html">gpsa_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">query</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View top hits</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="updown-bidirectional-query">Up/Down Bidirectional Query<a class="anchor" aria-label="anchor" href="#updown-bidirectional-query"></a>
-</h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Find perturbations similar to a signature</span></span>
-<span><span class="va">gl</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_get_signature.html">gpsa_get_signature</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"D21455"</span>, dataset <span class="op">=</span> <span class="st">"logFC"</span><span class="op">)</span></span>
-<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_make_updown_query.html">gpsa_make_updown_query</a></span><span class="op">(</span><span class="va">gl</span>, n_each <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
-<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_search.html">gpsa_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">query</span>, return_components <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Most similar perturbations</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">res</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Most opposite perturbations</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="multi-channel-event-query">Multi-channel Event Query<a class="anchor" aria-label="anchor" href="#multi-channel-event-query"></a>
-</h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Define a complex event (e.g., viral mimicry: IFN up + cell cycle down)</span></span>
-<span><span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  IFN_UP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">ifn_genes</span>, sign <span class="op">=</span> <span class="op">+</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span>  CYCLE_DOWN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>genes <span class="op">=</span> <span class="va">cycle_genes</span>, sign <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_search.html">gpsa_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">query</span>, return_components <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_postprocess_modes.html">gpsa_postprocess_modes</a></span><span class="op">(</span><span class="va">out</span>, p_mode <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Phenocopy hits (all channels satisfied)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">res_similarity</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Discovery hits (at least one channel strong)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">res_discovery</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="batch-query">Batch Query<a class="anchor" aria-label="anchor" href="#batch-query"></a>
-</h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Multiple queries at once</span></span>
-<span><span class="va">queries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  Q1 <span class="op">=</span> <span class="fu"><a href="reference/gpsa_make_updown_query.html">gpsa_make_updown_query</a></span><span class="op">(</span><span class="va">gl1</span><span class="op">)</span>,</span>
-<span>  Q2 <span class="op">=</span> <span class="fu"><a href="reference/gpsa_make_updown_query.html">gpsa_make_updown_query</a></span><span class="op">(</span><span class="va">gl2</span><span class="op">)</span>,</span>
-<span>  Q3 <span class="op">=</span> <span class="fu"><a href="reference/gpsa_make_updown_query.html">gpsa_make_updown_query</a></span><span class="op">(</span><span class="va">gl3</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">bat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpsa_batch_search.html">gpsa_batch_search</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">queries</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<ul>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/articles/GPSA.html">Get Started</a></strong> - Installation and basic examples</li>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/articles/tutorial_updown.html">Up/Down Query Tutorial</a></strong> - Bidirectional similarity search</li>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/articles/tutorial_viral_mimicry.html">Multi-channel Events</a></strong> - Complex event definitions</li>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/articles/tutorial_batch.html">Batch Queries</a></strong> - Multiple queries and meta-analysis</li>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/articles/tutorial_vector_search.html">Vector Search</a></strong> - Full geneList queries</li>
+<li>
+<strong><a href="https://shipeng-guo.github.io/GPSA/reference/">API Reference</a></strong> - Complete function documentation</li>
+</ul>
 </div>
 <div class="section level2">
-<h2 id="performance-benchmarks">Performance Benchmarks<a class="anchor" aria-label="anchor" href="#performance-benchmarks"></a>
+<h2 id="performance">Performance<a class="anchor" aria-label="anchor" href="#performance"></a>
 </h2>
-<p>Database: 19,613 genes × 7,103 signatures</p>
+<p>Database: 19,613 genes x 7,103 signatures</p>
 <table class="table">
 <thead><tr class="header">
 <th>Mode</th>
@@ -260,87 +261,31 @@
 <td>Single gene set</td>
 <td>7.2s</td>
 </tr>
-<tr class="even">
-<td>Disk</td>
-<td>Up/Down 2-channel</td>
-<td>8.5s</td>
-</tr>
 </tbody>
 </table>
 <p><strong>Recommendation</strong>: Use <code>preload_Z = TRUE</code> for interactive analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="building-your-own-database">Building Your Own Database<a class="anchor" aria-label="anchor" href="#building-your-own-database"></a>
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># From a diffTable RDS (genes × signatures logFC matrix)</span></span>
-<span><span class="fu"><a href="reference/gpsa_build_db.html">gpsa_build_db</a></span><span class="op">(</span></span>
-<span>  rds_file <span class="op">=</span> <span class="st">"diffTable.rds"</span>,</span>
-<span>  h5file <span class="op">=</span> <span class="st">"gpsa_db.h5"</span>,</span>
-<span>  meta_file <span class="op">=</span> <span class="st">"metadata.rds"</span>,  <span class="co"># optional</span></span>
-<span>  compress_level <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  store_logFC <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="api-reference">API Reference<a class="anchor" aria-label="anchor" href="#api-reference"></a>
-</h2>
-<div class="section level3">
-<h3 id="core-functions">Core Functions<a class="anchor" aria-label="anchor" href="#core-functions"></a>
-</h3>
-<ul>
-<li>
-<code><a href="reference/gpsa_load_db.html">gpsa_load_db()</a></code> - Load database</li>
-<li>
-<code><a href="reference/gpsa_search.html">gpsa_search()</a></code> - Gene-set query</li>
-<li>
-<code><a href="reference/gpsa_search_vector.html">gpsa_search_vector()</a></code> - Full geneList query</li>
-<li>
-<code><a href="reference/gpsa_batch_search.html">gpsa_batch_search()</a></code> - Multiple queries</li>
-<li>
-<code><a href="reference/gpsa_build_db.html">gpsa_build_db()</a></code> - Build database</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="query-helpers">Query Helpers<a class="anchor" aria-label="anchor" href="#query-helpers"></a>
-</h3>
-<ul>
-<li>
-<code><a href="reference/gpsa_make_updown_query.html">gpsa_make_updown_query()</a></code> - Create Up/Down query</li>
-<li>
-<code><a href="reference/gpsa_make_updown_query_adaptive.html">gpsa_make_updown_query_adaptive()</a></code> - Adaptive gene selection</li>
-<li>
-<code><a href="reference/gpsa_get_signature.html">gpsa_get_signature()</a></code> - Extract signature vector</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="post-processing">Post-processing<a class="anchor" aria-label="anchor" href="#post-processing"></a>
-</h3>
-<ul>
-<li>
-<code><a href="reference/gpsa_postprocess_modes.html">gpsa_postprocess_modes()</a></code> - Dual-mode scoring</li>
-<li>
-<code><a href="reference/gpsa_attach_channel_scores.html">gpsa_attach_channel_scores()</a></code> - Add channel columns</li>
-<li>
-<code><a href="reference/gpsa_meta_stouffer.html">gpsa_meta_stouffer()</a></code> - Meta-analysis</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
-</h3>
-<ul>
-<li>
-<code><a href="reference/gpsa_plot_gsea.html">gpsa_plot_gsea()</a></code> - GSEA running plot</li>
-<li>
-<code><a href="reference/gpsa_gsea_running.html">gpsa_gsea_running()</a></code> - Compute running scores</li>
-</ul>
-</div>
+<p>If you use GPSA in your research, please cite:</p>
+<blockquote>
+<p>Shao S. (2025). GPSA: Gene-set Perturbation Signature Analysis. R package version 0.1.0. <a href="https://github.com/Shipeng-Guo/GPSA" class="external-link uri">https://github.com/Shipeng-Guo/GPSA</a></p>
+</blockquote>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
 <p>MIT License</p>
+</div>
+<div class="section level2">
+<h2 id="links">Links<a class="anchor" aria-label="anchor" href="#links"></a>
+</h2>
+<ul>
+<li><a href="https://github.com/Shipeng-Guo/GPSA" class="external-link">GitHub Repository</a></li>
+<li><a href="https://shipeng-guo.github.io/GPSA/">Documentation Site</a></li>
+<li><a href="https://github.com/Shipeng-Guo/GPSA/issues" class="external-link">Report Issues</a></li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

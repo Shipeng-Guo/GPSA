@@ -1,167 +1,144 @@
 # GPSA: Gene-set Perturbation Signature Analysis
 
-GPSA provides fast similarity search over large-scale perturbation
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**GPSA** provides fast similarity search over large-scale perturbation
 signature databases using cMAP/GSEA-style rankZ semantics.
 
-## Documentation
+## Why GPSA?
 
-- **[Get Started
-  Tutorial](https://shipeng-guo.github.io/GPSA/articles/GPSA.html)** -
-  Quick start guide
-- **[Complete Case
-  Study](https://shipeng-guo.github.io/GPSA/articles/case_study.html)** -
-  Full examples with ER pathway, Viral mimicry, etc.
-- **[Documentation Site](https://shipeng-guo.github.io/GPSA/)** - Full
-  API reference
+Large-scale perturbation experiments (e.g., CRISPR knockouts, drug
+treatments) generate thousands of transcriptomic signatures. Given a
+query gene set or expression profile, researchers often need to find
+which perturbations produce **similar** or **opposite** effects.
+Traditional connectivity map (cMAP) approaches require iterating over
+thousands of signatures, which can be slow.
 
-## Features
+**GPSA** solves this by:
 
-- **Fast Search**: ~0.15s per query in memory mode, ~7s in disk mode
-- **Multiple Query Types**: Single gene set, Up/Down bidirectional,
-  multi-channel events, batch queries
-- **HDF5 Storage**: Memory-efficient storage for 20k genes × 7k+
-  signatures
-- **Dual-mode Scoring**: Phenocopy (strict) and Discovery (one-sided)
-  modes
-- **Full Vector Search**: Query with complete gene expression profiles
+1.  **Pre-computing rankZ-transformed signatures** stored in HDF5 format
+2.  **Enabling sub-second queries** via optimized matrix operations
+3.  **Supporting flexible query types** from simple gene sets to complex
+    multi-channel events
+
+## When to Use GPSA
+
+- **Drug repurposing**: Find compounds that reverse a disease signature
+- **Mechanism discovery**: Identify genes whose perturbation mimics your
+  phenotype
+- **Pathway analysis**: Query with pathway gene sets to find relevant
+  perturbations
+- **Cross-study comparison**: Compare your signature against public
+  perturbation databases
+
+## Key Features
+
+| Feature                  | Description                                                                 |
+|--------------------------|-----------------------------------------------------------------------------|
+| **Fast Search**          | ~0.15s per query in memory mode, ~7s in disk mode                           |
+| **Multiple Query Types** | Single gene set, Up/Down bidirectional, multi-channel events, batch queries |
+| **HDF5 Storage**         | Memory-efficient storage for 20k genes x 7k+ signatures                     |
+| **Dual-mode Scoring**    | Phenocopy (strict) and Discovery (one-sided) modes                          |
+| **Full Vector Search**   | Query with complete gene expression profiles                                |
+| **GSEA Visualization**   | Built-in running enrichment plots                                           |
+
+## How It Works
+
+GPSA uses **rankZ semantics** similar to the Connectivity Map
+methodology:
+
+1.  **Database signatures** are rank-transformed and Z-scored (rankZ)
+2.  **Query gene sets** are compiled into sparse indicator vectors with
+    direction signs
+3.  **Similarity scores** are computed via efficient matrix
+    multiplication
+4.  **Statistical significance** is assessed using empirical null
+    distributions (tau scores)
+
+This approach captures the **relative ordering** of genes rather than
+absolute expression values, making it robust across platforms and
+batches.
 
 ## Installation
 
-### 方法1: 从本地源码安装（推荐）
+Install GPSA directly from GitHub:
 
 ``` r
-# 设置镜像加速（中国用户）
-options("repos" = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
-options(BioC_mirror = "https://mirrors.westlake.edu.cn/bioconductor")
+# Install remotes if needed
+if (!requireNamespace("remotes", quietly = TRUE)) {
 
-# 安装依赖
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install("rhdf5")
-install.packages("Matrix")
+install.packages("remotes")
+}
 
-# 从本地源码安装（将路径替换为实际GPSA目录）
-install.packages("/path/to/GPSA", repos = NULL, type = "source")
+# Install GPSA
+remotes::install_github("Shipeng-Guo/GPSA")
 ```
 
-### 方法2: 使用devtools安装
+### Dependencies
+
+GPSA requires the following packages (installed automatically):
+
+- **rhdf5** (Bioconductor) - HDF5 file handling
+- **Matrix** - Sparse matrix operations
+
+Optional packages for enhanced functionality:
 
 ``` r
-# 安装devtools（如果没有）
-install.packages("devtools")
-
-# 从本地目录安装
-devtools::install_local("/path/to/GPSA")
-
-# 或直接加载（开发模式，无需安装）
-devtools::load_all("/path/to/GPSA")
-```
-
-### 方法3: 终端命令行安装
-
-``` bash
-cd /path/to/GPSA  # 进入包目录
-R CMD build .     # 构建tar.gz包
-R CMD INSTALL GPSA_*.tar.gz  # 安装
-```
-
-### 可选依赖
-
-``` r
-# GSEA绘图（推荐）
+# For GSEA plots (recommended)
 BiocManager::install("fgsea")
 
-# MSigDB基因集
+# For MSigDB gene sets
 install.packages("msigdbr")
 
-# 高级绘图
+# For advanced plotting
 install.packages("ggplot2")
 ```
 
 ## Quick Start
 
-### 1. First-time Setup: Download HDF5 Database
-
-Download the pre-built HDF5 database file and set the path:
-
 ``` r
 library(GPSA)
 
-# Set path once (persists for session)
+# Set path to HDF5 database (download separately)
 options(GPSA.h5 = "/path/to/gpsa_db.h5")
 
-# Or set via environment variable
-Sys.setenv(GPSA_H5 = "/path/to/gpsa_db.h5")
-```
-
-### 2. Load Database
-
-``` r
-# Disk mode (slower queries, less memory)
-db <- gpsa_load_db(preload_Z = FALSE)
-
-# Memory mode (fast queries, ~1GB RAM)
+# Load database (memory mode for fast queries)
 db <- gpsa_load_db(preload_Z = TRUE)
-```
 
-### 3. Basic Query Examples
-
-#### Single Gene Set Query
-
-``` r
 # Query with a gene set
-query <- list(MyGenes = list(genes = c("TP53", "BRCA1", "EGFR", ...), sign = +1))
-out <- gpsa_search(db, query)
-head(out$res)
-```
-
-#### Up/Down Bidirectional Query
-
-``` r
-# Find perturbations similar to a signature
-gl <- gpsa_get_signature(db, "D21455", dataset = "logFC")
-query <- gpsa_make_updown_query(gl, n_each = 300)
-out <- gpsa_search(db, query, return_components = TRUE)
-
-# Most similar perturbations
-head(out$res)
-
-# Most opposite perturbations
-tail(out$res)
-```
-
-#### Multi-channel Event Query
-
-``` r
-# Define a complex event (e.g., viral mimicry: IFN up + cell cycle down)
 query <- list(
-  IFN_UP = list(genes = ifn_genes, sign = +1),
-  CYCLE_DOWN = list(genes = cycle_genes, sign = -1)
+  MyGenes = list(genes = c("TP53", "BRCA1", "EGFR"), sign = +1)
 )
-out <- gpsa_search(db, query, return_components = TRUE)
-out <- gpsa_postprocess_modes(out, p_mode = "norm")
+out <- gpsa_search(db, query)
 
-# Phenocopy hits (all channels satisfied)
-head(out$res_similarity)
-
-# Discovery hits (at least one channel strong)
-head(out$res_discovery)
+# View top hits
+head(out$res)
 ```
 
-#### Batch Query
+## Documentation
 
-``` r
-# Multiple queries at once
-queries <- list(
-  Q1 = gpsa_make_updown_query(gl1),
-  Q2 = gpsa_make_updown_query(gl2),
-  Q3 = gpsa_make_updown_query(gl3)
-)
-bat <- gpsa_batch_search(db, queries)
-```
+- **[Get
+  Started](https://shipeng-guo.github.io/GPSA/articles/GPSA.html)** -
+  Installation and basic examples
+- **[Up/Down Query
+  Tutorial](https://shipeng-guo.github.io/GPSA/articles/tutorial_updown.html)** -
+  Bidirectional similarity search
+- **[Multi-channel
+  Events](https://shipeng-guo.github.io/GPSA/articles/tutorial_viral_mimicry.html)** -
+  Complex event definitions
+- **[Batch
+  Queries](https://shipeng-guo.github.io/GPSA/articles/tutorial_batch.html)** -
+  Multiple queries and meta-analysis
+- **[Vector
+  Search](https://shipeng-guo.github.io/GPSA/articles/tutorial_vector_search.html)** -
+  Full geneList queries
+- **[API Reference](https://shipeng-guo.github.io/GPSA/reference/)** -
+  Complete function documentation
 
-## Performance Benchmarks
+## Performance
 
-Database: 19,613 genes × 7,103 signatures
+Database: 19,613 genes x 7,103 signatures
 
 | Mode   | Query Type        | Time (avg) |
 |--------|-------------------|------------|
@@ -170,67 +147,25 @@ Database: 19,613 genes × 7,103 signatures
 | Memory | Multi 4-channel   | 0.25s      |
 | Memory | Batch 5 queries   | 0.47s      |
 | Disk   | Single gene set   | 7.2s       |
-| Disk   | Up/Down 2-channel | 8.5s       |
 
 **Recommendation**: Use `preload_Z = TRUE` for interactive analysis.
 
-## Building Your Own Database
+## Citation
 
-``` r
-# From a diffTable RDS (genes × signatures logFC matrix)
-gpsa_build_db(
-  rds_file = "diffTable.rds",
-  h5file = "gpsa_db.h5",
-  meta_file = "metadata.rds",  # optional
-  compress_level = 1,
-  store_logFC = TRUE,
-  verbose = TRUE
-)
-```
+If you use GPSA in your research, please cite:
 
-## API Reference
-
-### Core Functions
-
-- [`gpsa_load_db()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_load_db.md) -
-  Load database
-- [`gpsa_search()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_search.md) -
-  Gene-set query
-- [`gpsa_search_vector()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_search_vector.md) -
-  Full geneList query
-- [`gpsa_batch_search()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_batch_search.md) -
-  Multiple queries
-- [`gpsa_build_db()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_build_db.md) -
-  Build database
-
-### Query Helpers
-
-- [`gpsa_make_updown_query()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query.md) -
-  Create Up/Down query
-- [`gpsa_make_updown_query_adaptive()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_make_updown_query_adaptive.md) -
-  Adaptive gene selection
-- [`gpsa_get_signature()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_get_signature.md) -
-  Extract signature vector
-
-### Post-processing
-
-- [`gpsa_postprocess_modes()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_postprocess_modes.md) -
-  Dual-mode scoring
-- [`gpsa_attach_channel_scores()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_attach_channel_scores.md) -
-  Add channel columns
-- [`gpsa_meta_stouffer()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_meta_stouffer.md) -
-  Meta-analysis
-
-### Visualization
-
-- [`gpsa_plot_gsea()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_plot_gsea.md) -
-  GSEA running plot
-- [`gpsa_gsea_running()`](https://shipeng-guo.github.io/GPSA/reference/gpsa_gsea_running.md) -
-  Compute running scores
+> Shao S. (2025). GPSA: Gene-set Perturbation Signature Analysis. R
+> package version 0.1.0. <https://github.com/Shipeng-Guo/GPSA>
 
 ## License
 
 MIT License
+
+## Links
+
+- [GitHub Repository](https://github.com/Shipeng-Guo/GPSA)
+- [Documentation Site](https://shipeng-guo.github.io/GPSA/)
+- [Report Issues](https://github.com/Shipeng-Guo/GPSA/issues)
 
 # Package index
 
@@ -320,9 +255,32 @@ Configuration and helper functions
 
 # Articles
 
-### Tutorial
+### Getting Started
 
 - [Get Started with
   GPSA](https://shipeng-guo.github.io/GPSA/articles/GPSA.md):
-- [GPSA Case Study:
-  完整功能演示](https://shipeng-guo.github.io/GPSA/articles/case_study.md):
+
+### Query Types
+
+Different ways to query the perturbation database
+
+- [Tutorial: Up/Down Bidirectional
+  Query](https://shipeng-guo.github.io/GPSA/articles/tutorial_updown.md):
+- [Tutorial: Multi-channel Event Definition (Viral
+  Mimicry)](https://shipeng-guo.github.io/GPSA/articles/tutorial_viral_mimicry.md):
+
+### Advanced Topics
+
+Batch processing and full vector search
+
+- [Tutorial: Batch Queries and
+  Meta-analysis](https://shipeng-guo.github.io/GPSA/articles/tutorial_batch.md):
+- [Tutorial: Full Vector
+  Search](https://shipeng-guo.github.io/GPSA/articles/tutorial_vector_search.md):
+
+### Case Studies
+
+Complete workflows and examples
+
+- [Complete Case Study: From Gene Sets to
+  Discovery](https://shipeng-guo.github.io/GPSA/articles/case_study.md):

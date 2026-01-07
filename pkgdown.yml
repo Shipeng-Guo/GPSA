@@ -4,7 +4,11 @@ pkgdown_sha: ~
 articles:
   case_study: case_study.html
   GPSA: GPSA.html
-last_built: 2026-01-07T07:00Z
+  tutorial_batch: tutorial_batch.html
+  tutorial_updown: tutorial_updown.html
+  tutorial_vector_search: tutorial_vector_search.html
+  tutorial_viral_mimicry: tutorial_viral_mimicry.html
+last_built: 2026-01-07T07:50Z
 urls:
   reference: https://shipeng-guo.github.io/GPSA/reference
   article: https://shipeng-guo.github.io/GPSA/articles
