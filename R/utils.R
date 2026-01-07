@@ -1,4 +1,4 @@
-#' @importFrom stats qnorm pnorm p.adjust rank sd median mad
+#' @importFrom stats qnorm pnorm p.adjust sd median mad
 #' @importFrom graphics plot abline rug mtext
 #' @importFrom grDevices dev.new
 #' @importFrom utils head tail
