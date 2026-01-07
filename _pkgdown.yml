@@ -1,0 +1,81 @@
+url: https://shipeng-guo.github.io/GPSA/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+home:
+  title: GPSA - Gene-set Perturbation Signature Analysis
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    articles:
+      text: Tutorial
+      menu:
+        - text: Get Started
+          href: articles/GPSA.html
+        - text: "---"
+        - text: Complete Case Study
+          href: articles/case_study.html
+
+articles:
+  - title: Tutorial
+    navbar: ~
+    contents:
+      - GPSA
+      - case_study
+
+reference:
+  - title: Core Functions
+    desc: Main search and database functions
+    contents:
+      - gpsa_load_db
+      - gpsa_search
+      - gpsa_search_vector
+      - gpsa_batch_search
+      - gpsa_build_db
+
+  - title: Query Helpers
+    desc: Functions to construct queries
+    contents:
+      - gpsa_make_updown_query
+      - gpsa_make_updown_query_adaptive
+      - gpsa_compile_query
+      - gpsa_compile_signature_vector
+      - gpsa_sparsify_query_energy
+
+  - title: Signature Extraction
+    desc: Extract and prepare signature data
+    contents:
+      - gpsa_get_signature
+      - gpsa_pick_signature
+      - gpsa_prepare_geneList
+      - gpsa_collapse_duplicates_maxabs
+
+  - title: Post-processing
+    desc: Score computation and result processing
+    contents:
+      - gpsa_postprocess_modes
+      - gpsa_compute_mode_scores
+      - gpsa_attach_channel_scores
+      - gpsa_score_stats
+      - gpsa_meta_stouffer
+      - gpsa_rank_in
+
+  - title: Visualization
+    desc: GSEA plots and enrichment visualization
+    contents:
+      - gpsa_plot_gsea
+      - gpsa_gsea_running
+      - gpsa_fgsea_updown
+
+  - title: Utilities
+    desc: Configuration and helper functions
+    contents:
+      - gpsa_get_h5path
+      - gpsa_set_h5path
+      - gpsa_install_deps
+

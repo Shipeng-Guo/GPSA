@@ -19,3 +19,7 @@
 ^cran-comments\.md$
 ^\.github$
 
+# pkgdown site and config (not part of R package tarball)
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

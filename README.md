@@ -2,6 +2,12 @@
 
 GPSA provides fast similarity search over large-scale perturbation signature databases using cMAP/GSEA-style rankZ semantics.
 
+## Documentation
+
+- **[Get Started Tutorial](https://shipeng-guo.github.io/GPSA/articles/GPSA.html)** - Quick start guide
+- **[Complete Case Study](https://shipeng-guo.github.io/GPSA/articles/case_study.html)** - Full examples with ER pathway, Viral mimicry, etc.
+- **[Documentation Site](https://shipeng-guo.github.io/GPSA/)** - Full API reference
+
 ## Features
 
 - **Fast Search**: ~0.15s per query in memory mode, ~7s in disk mode

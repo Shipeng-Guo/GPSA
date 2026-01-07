@@ -11,7 +11,9 @@ Description: GPSA provides fast similarity search over large-scale perturbation
     preloading for maximum speed (~0.15s per query in memory mode).
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+URL: https://shipeng-guo.github.io/GPSA/,
+    https://github.com/Shipeng-Guo/GPSA
+BugReports: https://github.com/Shipeng-Guo/GPSA/issues
 Depends: R (>= 3.5.0)
 Imports:
     rhdf5,
@@ -25,7 +27,10 @@ Suggests:
     msigdbr,
     fgsea,
     ggplot2,
+    knitr,
+    rmarkdown,
+    pkgdown,
     testthat (>= 3.0.0)
+VignetteBuilder: knitr
 biocViews: GeneSetEnrichment, Transcriptomics, Software
 RoxygenNote: 7.2.3
-

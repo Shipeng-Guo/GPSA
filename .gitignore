@@ -17,6 +17,9 @@ scripts/
 *.tar.gz
 *.Rcheck/
 
+# pkgdown site (generated locally)
+docs/
+
 # OS files
 .DS_Store
 Thumbs.db
